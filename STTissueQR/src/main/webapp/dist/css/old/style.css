@@ -1,0 +1,446 @@
+* {
+	font-size: 12px;
+	margin: 0px;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+}
+
+.block1 {
+	position: fixed;
+	height: 63px;
+	left: 0;
+	right: 0;
+	color: white;
+	background-color: #e0f7f17a;
+}
+
+.block3 {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	top: 65px;
+	/* background: #FAFAFA; */
+	font-size: 14px !important;
+	padding: 8px;
+	z-index: -1;
+}
+
+.block4 {
+	position: fixed;
+	left: 0;
+	width: 240px;
+	height: 25px;
+	bottom: 0;
+	/* border: 1px solid #6E6E6E; */
+	/* background: #996633; */
+	color: white;
+	text-align: center;
+}
+
+.top-block {
+	position: absolute;
+	border-bottom: #D6D2D2 1px solid;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 40px;
+}
+
+.bottom-block {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 41px;
+	bottom: 0;
+	overflow: auto;
+}
+
+.title-div {
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	width: 500px;
+}
+
+.option-div {
+	left: 500px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	position: absolute;
+	text-align: right;
+}
+
+.block4 p {
+	margin: 4px;
+}
+
+.logo {
+	float: left;
+}
+
+.logo span {
+	font-size: 27px;
+	font-weight: bold;
+}
+
+.nav {
+	
+	background-color:#e0f7f17a;
+	height: 38px;
+}
+
+.nav ul {
+	list-style: none;
+	margin: 0px;
+}
+
+.nav ul li {
+	float: right;
+	margin-right: 10px;
+	text-transform: uppercase;
+	display: block;
+	margin-top: 7px;
+	font-size: 14px;
+	color: #996633;
+	font-family: serif;
+	font-weight: bold;
+}
+
+.nav ul li a {
+	padding: 6px;
+	color: #996633;
+}
+
+.navbar {
+	position: absolute;
+	background: rgb(0, 91, 0);
+	left: 0;
+	right: 0;
+	height: 20px;
+}
+
+.navbar ul {
+	list-style: none;
+	margin: 0px 0 0 -35px;
+	position: relative;
+	float: left;
+}
+
+.navbar ul li {
+	float: left;
+	margin: 0px 0 4px 0px;
+	padding: 5px;
+}
+
+.navbar ul li a {
+	color: white;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 12px;
+	display: block;
+}
+
+.navbar ul li .sep {
+	display: block;
+	width: 1px;
+	height: 14px;
+	background-color: white;
+}
+
+.navbar .dropdown  ul {
+	position: absolute;
+	list-style: none;
+	margin-left: -53px;
+	display: none;
+	height: inherit;
+	margin-top: 2px;
+	float: none;
+}
+
+.navbar .dropdown:HOVER ul {
+	display: block;
+}
+
+.navbar .dropdown ul li {
+	/* display: block; */
+	/* 	border-bottom: 1px solid #FFF; */
+	background-color: #CB842E;
+	float: none;
+	padding: 2px;
+	min-width: 240px;
+	font-size: 12px;
+	margin: 0px;
+}
+
+.navbar .dropdown ul li.divider {
+	font-size: 11px;
+	background-color: #F5DA81;
+	color: #004B75;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.navbar .dropdown ul li a {
+	margin-left: 5px;
+	font-size: 11px;
+	
+}
+
+.page-title {
+	width: 100%;
+	color: #996633;
+	border-bottom: 1px solid #996633;
+}
+
+.page-title span {
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+a {
+	color: #996633;
+}
+
+.message {
+	color: green;
+}
+
+.error {
+	color: red;
+}
+
+.table {
+	margin-top: 2px;
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	font-family: sans-serif;
+}
+
+.table thead {
+	background: rgb(240, 220, 200);
+}
+
+.table tfoot {
+	background: rgb(240, 239, 238);
+}
+
+.table th, .table td {
+	border: 1px solid gray;
+}
+
+.table td {
+	font-size: 11px;
+	padding: 2px;
+}
+
+.table-selector {
+	padding: 5px;
+	background: rgb(236, 236, 236);
+	text-align: center;
+	border: 1px solid gray;
+}
+
+.redcolor {
+	background-color: red !important;
+	color: white !important;
+}
+
+.greencolor {
+	background-color: #7CFC00 !important;
+	color: black !important;
+}
+
+.yellowcolor {
+	background-color: yellow !important;
+	color: black !important;
+}
+
+.redBorder {
+	border-color: #FF4500;
+}
+
+.trobjrow {
+	background-color: #F5DA81;
+	color: #0040FF;
+}
+
+.trobjrow a {
+	text-decoration: underline;
+	color: #0040FF;
+}
+
+.table table td, .table table td {
+	border: none;
+}
+
+.centerline-table {
+	width: 800px;
+	border-collapse: collapse;
+	margin: auto;
+}
+
+.centerline-table thead {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 14px;
+	color: rgb(32, 32, 32);
+}
+
+.centerline-table td {
+	border: 1px solid #996633;
+	text-align: center;
+}
+
+.centerline-table td input[type=text] {
+	width: 80px;
+}
+
+.centerline-table .vcolor {
+	background-color: rgb(233, 233, 233);
+	cursor: pointer;
+}
+
+.centerline-table select {
+	padding: 2px;
+}
+
+.fixed-message {
+	width: 400px;
+	height: 32px;
+	position: fixed;
+	left: 35%;
+	text-align: center;
+	margin-left: -200px;
+	font-weight: bold;
+	padding-top: 5px;
+	  z-index: -1;
+}
+
+.fixed-message .tmessage {
+	color: rgb(15, 143, 20);
+}
+
+.dialog {
+	display: none;
+	position: fixed;
+	width: 800px;
+	height: 400px;
+	background: #FAFAFA;
+	margin-top: 100px;
+	margin-left: -400px;
+	left: 50%;
+	z-index: 1000;
+	border: 2px solid rgb(233, 233, 233);
+}
+
+.dialog .dialog-header {
+	background: #BE6914;
+	height: 19px;
+	padding: 8px;
+	font-size: 19px;
+	color: white;
+}
+
+.dialog .dialog-header a {
+	font-size: 14px;
+}
+
+.dialog .dialog-body {
+	width: auto;
+	overflow: auto;
+	padding: 4px;
+	height: 358px;
+}
+
+.lefttwindow {
+	position: fixed;
+	width: 100px;
+	min-height: 150px;
+	background-color: rgb(233, 233, 233);
+	margin-top: 25%;
+}
+
+.lefttwindow .title {
+	background-color: #996633;
+	border: 1px solid gray;
+	color: white;
+	font-size: 14px;
+	text-align: center;
+	text-transform: capitalize;
+}
+
+.page-box {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background-image: url("../images/bgImg.png");
+	z-index: 1000;
+	text-align: center;
+	display: none;
+}
+li.sub1{
+	display: none;
+}
+li.sub2{
+	display: none;
+}
+li.sub3{
+	display: none;
+}
+li.sub4{
+	display: none;
+}
+
+
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 1s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    
+    animation-name: blinker;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    color: red;
+    background: yellow;
+}
+
+@-moz-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blink-border {
+    0% { border-color: blue; }
+    100% { border-color: red; }
+}

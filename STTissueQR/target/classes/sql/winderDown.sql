@@ -1,0 +1,49 @@
+INSERT INTO[winderDown]
+([position]
+,[operatorname]
+,[date]
+,[crew]
+,[shift]
+		,[machinedown],
+		[power],
+			[blade],
+			[sizeadjustmentmovement],
+			[rollkickerworkingproperly],
+			[anyhydraulicleaks],
+			[uprightbumperandcushionbumperworkingproperly],
+			[anycontrolpanelissues],
+			[anynoticeableissueswithconveyor],
+			[powerDesc],
+			[bladeDesc],
+			[sizeadjustmentmovementDesc],
+			[rollkickerworkingproperlyDesc],
+			[anyhydraulicleaksDesc],
+			[uprightbumperandcushionbumperworkingproperlyDesc],
+			[anycontrolpanelissuesDesc],
+			[anynoticeableissueswithconveyorDesc]
+				)
+VALUES
+(
+		:position,
+		:operatorname,
+		:date,
+		:crew,
+		:shift,
+		:machinedown,
+		:power,
+		:blade,
+		:sizeadjustmentmovement,
+		:rollkickerworkingproperly,
+		:anyhydraulicleaks,
+		:uprightbumperandcushionbumperworkingproperly,
+		:anycontrolpanelissues,
+		:anynoticeableissueswithconveyor,
+		:powerDesc,
+		:bladeDesc,
+		:sizeadjustmentmovementDesc,
+		:rollkickerworkingproperlyDesc,
+		:anyhydraulicleaksDesc,
+		:uprightbumperandcushionbumperworkingproperlyDesc,
+		:anycontrolpanelissuesDesc,
+		:anynoticeableissueswithconveyorDesc
+		)

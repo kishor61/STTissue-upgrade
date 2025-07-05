@@ -1,0 +1,109 @@
+/**
+ *Apr 22, 2015
+ *FrpYieldServiceImp.java
+ * TODO
+ *com.st.frpyield.service
+ *FrpYieldServiceImp.java
+ *Sunil Singh Bora
+ */
+package com.st.frpyield.service;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.st.frpyield.dao.FrpYieldDao;
+import com.st.frpyield.model.FrpYield;
+
+/**
+ * @author Roshan Tailor
+ * This Code Is Done By Roshan Tailor Date :- 04/21/2015
+ */
+@Service
+public class FrpYieldServiceImp implements FrpYieldService {
+
+	@Autowired
+	private FrpYieldDao frpYieldDao;
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#save(com.st.frpyield.model.FrpYieldQuality)
+	 */
+	@Transactional
+	@Override
+	public int save(FrpYield frpYield) {
+		//System.out.println("Step Second..We Are In FrpYieldServiceImp.java");
+		return frpYieldDao.save(frpYield);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#update(com.st.frpyield.model.FrpYieldQuality)
+	 */
+	@Transactional
+	@Override
+	public void update(FrpYield frpYield) {
+		frpYieldDao.update(frpYield);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#getFrpYieldQualities()
+	 */
+	@Transactional
+	@Override
+	public List<FrpYield> getFrpYieldQualities(Date sdate) {
+		// TODO Auto-generated method stub
+	//	System.out.println(""+sdate);
+		return frpYieldDao.getFrpYieldQualities(sdate);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#delete(int)
+	 */
+	@Transactional
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		frpYieldDao.delete(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#getFrpYieldData(java.util.Date, java.util.Date)
+	 */
+	@Transactional
+	@Override
+	public List<FrpYield> getFrpYieldData(Date startdate, Date enddate) {
+		// TODO Auto-generated method stub
+		return frpYieldDao.getFrpYielData(startdate,enddate);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#getEditFrpYieldData(java.lang.String)
+	 */
+	@Transactional
+	@Override
+	public List<FrpYield> getEditFrpYieldData(Date date) {
+		// TODO Auto-generated method stub
+		return frpYieldDao.getEditFrpYieldData(date);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#getDailyReportData(java.util.Date, java.util.Date)
+	 */
+	@Transactional
+	@Override
+	public List<FrpYield> getDailyReportData(Date checkDate, Date checkDate2) {
+		// TODO Auto-generated method stub
+		
+		return frpYieldDao.getDailyReportData(checkDate,checkDate2);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.service.FrpYieldService#getFrpYieldSummaryData(java.util.Date, java.util.Date)
+	 */
+	@Transactional
+	@Override
+	public List<FrpYield> getFrpYieldSummaryData(Date startdate, Date enddate) {
+		// TODO Auto-generated method stub
+		return frpYieldDao.getFrpYieldSummaryData(startdate,enddate);
+	}
+}

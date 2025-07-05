@@ -1,0 +1,358 @@
+/**
+ *Apr 22, 2015
+ *FrpYieldQualityDaoImp.java
+ * TODO
+ *com.st.frpyield.dao
+ *FrpYieldQualityDaoImp.java
+ *Sunil Singh Bora
+ */
+package com.st.frpyield.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import com.st.frpyield.mapper.FrpYieldMapper;
+import com.st.frpyield.mapper.FrpYieldReportMapper;
+import com.st.frpyield.model.FrpYield;
+/**
+ * @author roshan
+ *
+ */
+@Repository
+public class FrpYieldDaoImp  implements FrpYieldDao{
+
+	@Autowired
+	private DataSource dataSource;	
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#save(com.st.frpyield.model.FrpYieldQuality)
+	 */
+	@Override
+	public int save(final FrpYield frpYield) {
+		//System.out.println("Step Third..We Are In FrpYieldDaoImp.java");
+		//System.out.println("Data::::"+frpYield);
+		JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+		KeyHolder keyHolder=new GeneratedKeyHolder();
+		final String sql="insert into frpYield"
+				+ "([date],"
+				+ "[sampleno],"
+				+ "[rfdetrasherrejcts],"
+				+ "[rfhdcleaner],"
+				+ "[rftertiarycoarse],"
+				+ "[rftertiaryfine],"
+				+ "[rffrwdcleaner],"
+				+ "[rfprimcell],"
+				+ "[rfseccell],"
+				+ "[rffsdclarifier],"
+				+ "[cyofdww],"
+				+ "[rchdcleaner],"
+				+ "[rctertiarycoarse],"
+				+ "[rctertiaryfine],"
+				+ "[rcfrwdcleaner],"
+				+ "[rcprimcell],"
+				+ "[rcseccell],"
+				+ "[rcfsdclarifier],"
+				+ "[ashdww],"
+				+ "[ashpupler],"
+				+ "[ashtertiarypress])"
+				+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//		final String sql="insert into frpYield([date],[sampleno],[rfdetrasherrejcts],[rfhdcleaner],[rftertiarycoarse],[rftertiaryfine],[rffrwdcleaner],[rfprimcell],[rfseccell],[rffsdclarifier],[cyofdww],[rchdcleaner],[rctertiarycoarse],[rctertiaryfine],[rcfrwdcleaner],[rcprimcell],[rcseccell],[rcfsdclarifier],[ashdww],[ashpupler],[ashtertiarypress]) values(5,5,5,5,1,4,4,4,4,45,5,4,4,4,4,4,4,4,4,4,4)";
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection arg0)
+					throws SQLException {
+				// TODO Auto-generated method stub
+				PreparedStatement statement=arg0.prepareStatement(sql,new String[] {"ID"});
+				//System.out.println(sql);
+				//statement.setDate(1, frpYield.getDate());
+				statement.setTimestamp(1, new Timestamp(frpYield.getDate().getTime()));
+				statement.setDouble(2,frpYield.getSampleno());
+				//Rejects Flow Code Starts From Here
+				statement.setDouble(3, frpYield.getRfdetrasherrejcts());
+				statement.setDouble(4, frpYield.getRfhdcleaner());
+				statement.setDouble(5, frpYield.getRftertiarycoarse());
+				statement.setDouble(6, frpYield.getRftertiaryfine());
+				statement.setDouble(7, frpYield.getRffrwdcleaner());
+				statement.setDouble(8, frpYield.getRfprimcell());
+				statement.setDouble(9, frpYield.getRfseccell());
+				statement.setDouble(10, frpYield.getRffsdclarifier());
+				//DWW From Mill Section Starts From Here
+				statement.setDouble(11, frpYield.getCyofdww());
+				//Rejects Consistencies Section Starts From Here
+				statement.setDouble(12, frpYield.getRchdcleaner());
+				statement.setDouble(13, frpYield.getRctertiarycoarse());
+				statement.setDouble(14, frpYield.getRctertiaryfine());
+				statement.setDouble(15, frpYield.getRcfrwdcleaner());
+				statement.setDouble(16, frpYield.getRcprimcell());
+				statement.setDouble(17, frpYield.getRcseccell());
+				statement.setDouble(18, frpYield.getRcfsdclarifier());
+				// Ash Section Starts From Here
+				statement.setDouble(19, frpYield.getAshdww());
+				statement.setDouble(20, frpYield.getAshpupler());
+				statement.setDouble(21, frpYield.getAshtertiarypress());
+				
+				return statement;
+			}
+			
+		},keyHolder);
+		return keyHolder.getKey().intValue();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#update(com.st.frpyield.model.FrpYieldQuality)
+	 */
+	@Override
+	public void update(final FrpYield frpYield) {
+		JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+		final String sql="update [frpYield] set "
+				+"[date]=?,"
+				+"[sampleno]=?,"
+				+"[rfdetrasherrejcts]=?,"
+				+"[rfhdcleaner]=?,"
+				+"[rftertiarycoarse]=?,"
+				+"[rftertiaryfine]=?,"
+				+"[rffrwdcleaner]=?,"
+				+"[rfprimcell]=?,"
+				+"[rfseccell]=?,"
+				+"[rffsdclarifier]=?,"
+				+"[cyofdww]=?,"
+				+"[rchdcleaner]=?,"
+				+"[rctertiarycoarse]=?,"
+				+"[rctertiaryfine]=?,"
+				+"[rcfrwdcleaner]=?,"
+				+"[rcprimcell]=?,"
+				+"[rcseccell]=?,"
+				+"[rcfsdclarifier]=?,"
+				+"[ashdww]=?,"
+				+"[ashpupler]=?,"
+				+"[ashtertiarypress]=?"
+				+ " where [ID]=?";
+		
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection arg0)
+					throws SQLException {
+				PreparedStatement statement=arg0.prepareStatement(sql);
+				//System.out.println("Query::::"+sql);
+//				statement.setDouble(1, frpYield.getDate());
+				statement.setTimestamp(1, new Timestamp(frpYield.getDate().getTime()));
+				statement.setDouble(2,frpYield.getSampleno());
+				//Rejects Flow Code Starts From Here
+				statement.setDouble(3, frpYield.getRfdetrasherrejcts());
+				statement.setDouble(4, frpYield.getRfhdcleaner());
+				statement.setDouble(5, frpYield.getRftertiarycoarse());
+				statement.setDouble(6, frpYield.getRftertiaryfine());
+				statement.setDouble(7, frpYield.getRffrwdcleaner());
+				statement.setDouble(8, frpYield.getRfprimcell());
+				statement.setDouble(9, frpYield.getRfseccell());
+				statement.setDouble(10, frpYield.getRffsdclarifier());
+				//DWW From Mill Section Starts From Here
+				statement.setDouble(11, frpYield.getCyofdww());
+				//Rejects Consistencies Section Starts From Here
+				statement.setDouble(12, frpYield.getRchdcleaner());
+				statement.setDouble(13, frpYield.getRctertiarycoarse());
+				statement.setDouble(14, frpYield.getRctertiaryfine());
+				statement.setDouble(15, frpYield.getRcfrwdcleaner());
+				statement.setDouble(16, frpYield.getRcprimcell());
+				statement.setDouble(17, frpYield.getRcseccell());
+				statement.setDouble(18, frpYield.getRcfsdclarifier());
+				// Ash Section Starts From Here
+				statement.setDouble(19, frpYield.getAshdww());
+				statement.setDouble(20, frpYield.getAshpupler());
+				statement.setDouble(21, frpYield.getAshtertiarypress());
+				statement.setInt(22, frpYield.getId());
+
+				return statement;
+			}
+		});
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#getFrpYieldQualities()
+	 */
+	@Override
+public List<FrpYield> getFrpYieldQualities(Date sdate) {
+		// TODO Auto-generated method stub
+		//System.out.println("DATE:::"+sdate);
+		
+		Calendar scal=Calendar.getInstance();
+		scal.setTime(sdate);
+		
+	//	System.out.println(scal);
+		
+		JdbcTemplate jdbcTemplate =new JdbcTemplate(dataSource);
+		String sql="select * from [frpYield] where ([Date]=?) order by [Date]";
+		List<FrpYield> frpYieldQualities= jdbcTemplate.query(sql,new Object[]{
+				new Timestamp(scal.getTime().getTime())
+		},new FrpYieldMapper());
+		return frpYieldQualities;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#delete(int)
+	 */
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+		String sql="delete from [frpYield] where [ID]=?";
+		jdbcTemplate.update(sql, new Object[]{id});
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#getFrpYielData(java.util.Date, java.util.Date)
+	 */
+	@Override
+	public List<FrpYield> getFrpYielData(Date startdate, Date enddate) {
+JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+		
+		Calendar scal=Calendar.getInstance();
+		scal.setTime(startdate);
+		
+		Calendar ecal=Calendar.getInstance();
+		ecal.setTime(enddate);
+
+		//String sql="select * from [frpYield] where ([Date] between ? and ?) group by [Date]";
+		//String sql="select * from [frpYield] where ([Date] between ? and ?)";
+		//String sql="select Avg(frpyield.sampleno) AS sampleno from [frpYield] where ([Date] between ? and ?)";
+		//String sql="select Avg(frpyield.sampleno) AS sampleno from [frpYield] where ([Date] between ? and ? ) group by Date ";
+		String sql="SELECT "
+				+ "(frpyield.date) AS date,"
+				+ "Avg(frpyield.sampleno) AS sampleno," 
+				+ "Avg(frpyield.rfdetrasherrejcts) AS rfdetrasherrejcts,"
+				+ "Avg(frpyield.rfhdcleaner) AS rfhdcleaner,"
+				+ "Avg(frpyield.rftertiarycoarse) AS rftertiarycoarse,"
+				+ "Avg(frpyield.rftertiaryfine) AS rftertiaryfine,"
+				+ "Avg(frpyield.rffrwdcleaner) AS rffrwdcleaner,"
+				+ "Avg(frpyield.rfprimcell) AS rfprimcell,"
+				+ "Avg(frpyield.rfseccell) AS rfseccell,"
+				+ "Avg(frpyield.rffsdclarifier) AS rffsdclarifier,"
+				+ "Avg(frpyield.cyofdww) AS cyofdww,"
+				+ "Avg(frpyield.rchdcleaner) AS rchdcleaner,"
+				+ "Avg(frpyield.rctertiarycoarse) AS rctertiarycoarse,"
+				+ "Avg(frpyield.rctertiaryfine) AS rctertiaryfine,"
+				+ "Avg(frpyield.rcfrwdcleaner) AS rcfrwdcleaner,"
+				+ "Avg(frpyield.rcprimcell) AS rcprimcell,"
+				+ "Avg(frpyield.rcseccell) AS rcseccell,"
+				+ "Avg(frpyield.rcfsdclarifier) AS rcfsdclarifier,"
+				+ "Avg(frpyield.ashdww) AS ashdww,"
+				+ "Avg(frpyield.ashpupler) AS ashpupler,"
+				+ "Avg(frpyield.ashtertiarypress) AS ashtertiarypress FROM frpyield where ([Date] between ? and ? ) group by Date";
+		List<FrpYield> frpYieldReport=jdbcTemplate.query(sql, new Object[]{
+				new Timestamp(scal.getTime().getTime()),
+				new Timestamp(ecal.getTime().getTime())
+		},new FrpYieldReportMapper());
+		
+		return frpYieldReport;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#getEditFrpYieldData(java.lang.String)
+	 */
+	@Override
+	public List<FrpYield> getEditFrpYieldData(Date date) {
+		// TODO Auto-generated method stub
+		JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+		String sql="select * from [frpYield] where ([date])=?";
+		List<FrpYield> editfrpyield= jdbcTemplate.query(sql,new Object[]{
+				//date.getTime()
+		new	Timestamp(date.getTime())	
+		}, new FrpYieldMapper());
+	//	System.out.println(editfrpyield);
+		return editfrpyield;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#getDailyReportData(java.util.Date, java.util.Date)
+	 */
+	@Override
+	public List<FrpYield> getDailyReportData(Date checkDate, Date checkDate2) {
+		// TODO Auto-generated method stub
+		JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+		//String sql="select * from [frpYield] where ([Date] between ? and ?) order by [Date]";
+		String sql="SELECT "
+				+ "(frpyield.date) AS date,"
+				+ "Avg(frpyield.sampleno) AS sampleno," 
+				+ "Avg(frpyield.rfdetrasherrejcts) AS rfdetrasherrejcts,"
+				+ "Avg(frpyield.rfhdcleaner) AS rfhdcleaner,"
+				+ "Avg(frpyield.rftertiarycoarse) AS rftertiarycoarse,"
+				+ "Avg(frpyield.rftertiaryfine) AS rftertiaryfine,"
+				+ "Avg(frpyield.rffrwdcleaner) AS rffrwdcleaner,"
+				+ "Avg(frpyield.rfprimcell) AS rfprimcell,"
+				+ "Avg(frpyield.rfseccell) AS rfseccell,"
+				+ "Avg(frpyield.rffsdclarifier) AS rffsdclarifier,"
+				+ "Avg(frpyield.cyofdww) AS cyofdww,"
+				+ "Avg(frpyield.rchdcleaner) AS rchdcleaner,"
+				+ "Avg(frpyield.rctertiarycoarse) AS rctertiarycoarse,"
+				+ "Avg(frpyield.rctertiaryfine) AS rctertiaryfine,"
+				+ "Avg(frpyield.rcfrwdcleaner) AS rcfrwdcleaner,"
+				+ "Avg(frpyield.rcprimcell) AS rcprimcell,"
+				+ "Avg(frpyield.rcseccell) AS rcseccell,"
+				+ "Avg(frpyield.rcfsdclarifier) AS rcfsdclarifier,"
+				+ "Avg(frpyield.ashdww) AS ashdww,"
+				+ "Avg(frpyield.ashpupler) AS ashpupler,"
+				+ "Avg(frpyield.ashtertiarypress) AS ashtertiarypress FROM frpyield where ([Date] between ? and ? ) group by Date";
+		List<FrpYield> getDailyReport=jdbcTemplate.query(sql,new Object[]{
+				new Timestamp(checkDate.getTime()),
+				new Timestamp(checkDate2.getTime())
+		},new FrpYieldReportMapper());
+		return getDailyReport;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.st.frpyield.dao.FrpYieldDao#getFrpYieldSummaryData(java.util.Date, java.util.Date)
+	 */
+	@Override
+	public List<FrpYield> getFrpYieldSummaryData(Date startdate, Date enddate) {
+		// TODO Auto-generated method stub
+		JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+			//String sql="select * from [frpYield] where ([Date] between ? and ?) order by [Date]";
+		String sql="SELECT "
+				+ "(frpyield.date) AS date,"
+				+ "Avg(frpyield.sampleno) AS sampleno," 
+				+ "Avg(frpyield.rfdetrasherrejcts) AS rfdetrasherrejcts,"
+				+ "Avg(frpyield.rfhdcleaner) AS rfhdcleaner,"
+				+ "Avg(frpyield.rftertiarycoarse) AS rftertiarycoarse,"
+				+ "Avg(frpyield.rftertiaryfine) AS rftertiaryfine,"
+				+ "Avg(frpyield.rffrwdcleaner) AS rffrwdcleaner,"
+				+ "Avg(frpyield.rfprimcell) AS rfprimcell,"
+				+ "Avg(frpyield.rfseccell) AS rfseccell,"
+				+ "Avg(frpyield.rffsdclarifier) AS rffsdclarifier,"
+				+ "Avg(frpyield.cyofdww) AS cyofdww,"
+				+ "Avg(frpyield.rchdcleaner) AS rchdcleaner,"
+				+ "Avg(frpyield.rctertiarycoarse) AS rctertiarycoarse,"
+				+ "Avg(frpyield.rctertiaryfine) AS rctertiaryfine,"
+				+ "Avg(frpyield.rcfrwdcleaner) AS rcfrwdcleaner,"
+				+ "Avg(frpyield.rcprimcell) AS rcprimcell,"
+				+ "Avg(frpyield.rcseccell) AS rcseccell,"
+				+ "Avg(frpyield.rcfsdclarifier) AS rcfsdclarifier,"
+				+ "Avg(frpyield.ashdww) AS ashdww,"
+				+ "Avg(frpyield.ashpupler) AS ashpupler,"
+				+ "Avg(frpyield.ashtertiarypress) AS ashtertiarypress FROM frpyield where ([Date] between ? and ? ) group by Date";	
+		List<FrpYield> getDailyReportSummary=jdbcTemplate.query(sql,new Object[]{
+					new Timestamp(startdate.getTime()),
+					new Timestamp(enddate.getTime())
+			},new FrpYieldReportMapper());
+		
+		return getDailyReportSummary;
+	}
+
+	
+
+}

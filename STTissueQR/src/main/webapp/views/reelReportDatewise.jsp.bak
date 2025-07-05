@@ -1,0 +1,163 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<!-- 
+<http-equiv="X-UA-Compatible" content="IE=edge"/>
+ -->
+<title><spring:message code="app.name" /> Reel Report View</title>
+
+<link type="text/css" rel="stylesheet" media="all" href="<spring:url value="/resources/css/printReport.css"/>" >
+
+<script type="text/javascript" src='<spring:url value="/resources/js/jquery.min.js"/>'></script>
+<script type="text/javascript" src='<spring:url value="/resources/js/jquery.PrintArea.js"/>'></script>
+
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#printBtn').click(function(){
+			$('#printDiv').printArea({
+				retainAttr:['class','style']
+			});
+		});
+	});
+</script>
+
+</head>
+<body>
+<div>
+	
+	&nbsp;&nbsp; <button id="printBtn">Print</button>
+	&nbsp;&nbsp; <button onclick="window.close();">Close</button>
+</div>
+<hr>
+<div id="printDiv" style="display: block;">
+<span class="header-report">Quality Report-Reel Testing</span>
+		<table class="table">
+			<thead style="font-size: 12px;">
+					<tr>
+						<th>Date</th>
+						<th>Time</th>
+						<th>Grade Code</th>
+						<th>Reel #</th>
+						<th>Scanner Basis wt <br> lbs
+							/3000ft
+						</th>
+						<th>Actual Basis wt <br> lbs
+							/3000ft
+						</th>
+						<th>Bulk <br> mils/8 ply
+						</th>
+						<th>MD Tensile <br> g/inch
+						</th>
+						<th>CD Tensile <br> g/inch
+						</th>
+						<th>MD % <br> Stretch
+						</th>
+						<th>MD/CD Tensile Ratio</th>
+						<th>MD Wet Tensile<br> g/inch
+						</th>
+						<th>CD Wet Tensile<br> g/inch
+						</th>
+						<th>CD Tensile Ratio<br> Wet/Dry
+						</th>
+						<th>Bright<br> ness %
+						</th>
+						<th>FWA Flow<br> (ml/min)
+						</th>
+						<th>Dirt Count<br> ppm
+						</th>
+						<th>FWA Dosage<br> lb/Ton
+						</th>
+						<th>TPH</th>
+						<th>Trim</th>
+						<th>Crepe Ratio</th>
+<!-- 						Code Starts From Here Done By Roshan Tailor -->
+						<th>L Value</th>
+						<th>A Value</th>
+						<th>B Value</th>
+<!-- 						Code Ends Here Done By Roshan Tailor -->
+						<th>Customer</th>
+						<th>Remarks</th>
+					</tr>
+
+			</thead>
+			<tbody>
+			<c:forEach items="${datas}" var="map">
+				
+					<c:choose>
+						<c:when test="${map['1'] eq 'OBJECTIVES'}">
+						<tr>
+							<td class="trobjrow">${map['1']}</td>
+							<td  class="trobjrow">${map['2']}</td>
+							<td  class="trobjrow">${map['3']}</td>
+							<td  class="trobjrow">${map['4']}</td>
+							<td  class="trobjrow">${map['5']}</td>
+							<td  class="trobjrow">${map['6']}</td>
+							<td  class="trobjrow"><fmt:formatNumber value="${map['7'] - 0.0000}" maxFractionDigits="0"/></td>
+							<td  class="trobjrow"><fmt:formatNumber value="${map['8'] - 0.0000}" maxFractionDigits="0"/></td>
+							<td class="trobjrow"><fmt:formatNumber value="${map['9'] - 0.0000}" maxFractionDigits="0"/></td>
+							<td class="trobjrow">${map['10']}</td>
+							<td  class="trobjrow">${map['11']}</td>
+							<td  class="trobjrow"><fmt:formatNumber value="${map['12'] - 0.0000}" maxFractionDigits="0"/></td>
+							<td  class="trobjrow"><fmt:formatNumber value="${map['13'] - 0.0000}" maxFractionDigits="0"/></td>
+							<td  class="trobjrow">${map['14']}</td>
+							<td  class="trobjrow"><fmt:formatNumber value="${map['15'] - 0.0000}" maxFractionDigits="0"/></td>
+							<td  class="trobjrow">${map['16']}</td>
+							<td  class="trobjrow"><fmt:formatNumber value="${map['17'] - 0.0000}" maxFractionDigits="0"/></td>
+							<td  class="trobjrow">${map['18']}</td>
+							<td  class="trobjrow">${map['19']}</td>
+							<td  class="trobjrow">${map['20']}</td>
+							<td  class="trobjrow">${map['21']}</td>
+<!-- 							Code Starts From Here Done BY Roshan Tailor Date :-03/07/02015 MM/DD/2015 -->
+							<td  class="trobjrow">${map['22']}</td>
+							<td  class="trobjrow">${map['23']}</td>
+							<td  class="trobjrow">${map['24']}</td>
+<!-- 							Code Ends Here Done By Roshan Tailor	 -->
+							<td  class="trobjrow">${map['25']}</td>
+							<td  class="trobjrow">${map['26']}</td>
+						</tr>
+						</c:when>
+						<c:otherwise>
+						<tr>
+							<td>${map['1']}</td>
+							<td>${map['2']}</td>
+							<td>${map['3']}</td>
+							<td>${map['4']}</td>
+							<td>${map['5']}</td>
+							<td class="${map['6C']}">${map['6']}</td>
+							<td class="${map['7C']}">${map['7']}</td>
+							<td class="${map['8C']}">${map['8']}</td>
+							<td class="${map['9C']}">${map['9']}</td>
+							<td class="${map['10C']}">${map['10']}</td>
+							<td class="${map['11C']}">${map['11']}</td>
+							<td class="${map['12C']}">${map['12']}</td>
+							<td class="${map['13C']}">${map['13']}</td>
+							<td class="${map['14C']}">${map['14']}</td>
+							<td class="${map['15C']}">${map['15']}</td>
+							<td>${map['16']}</td>
+							<td class="${map['17C']}">${map['17']}</td>
+							<td>${map['18']}</td>
+							<td>${map['19']}</td>
+							<td>${map['20']}</td>
+							<td>${map['21']}</td>
+							<td>${map['22']}</td>
+							<td>${map['23']}</td>
+						</tr>
+						</c:otherwise>
+					</c:choose>
+					
+				
+			</c:forEach>	
+			</tbody>
+
+		</table>
+</div>
+
+
+</body>
+</html>

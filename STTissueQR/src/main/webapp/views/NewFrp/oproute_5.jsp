@@ -1,0 +1,1603 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title><spring:message code="app.name" /></title>
+<jsp:include page="../common.jsp"></jsp:include>
+<spring:url value="/frpobccReport/checkdata" var="checkURL" />
+<spring:url value="/frpobccReport/hit" var="hitURL" />
+<script type="text/javascript" src='<spring:url value="/resources/js/jquery.PrintArea.js"/>'></script>
+<script type="text/javascript">
+$(function(){
+	$('input[name=date]').datepicker({
+		dateFormat:'mm-dd-yy',
+		changeMonth: true,
+	    changeYear: true,
+	    //minDate:-1
+	});
+	
+
+	/* $("input[type='checkbox']").on("change",function(){
+	   if($(this).is(":checked"))
+	 $(this).val("1");
+	    else
+	 $(this).val("0");
+	});
+	
+	$("input[type='checkbox']").each(function(){
+		  		 
+			if($(this).val()==1)
+				{
+				   this.checked = true;
+				}
+			else
+				{
+				
+				}
+		
+			
+	}); */
+	
+});
+ 
+function operatorSelect(value)
+{
+	var position  = $('#operator').val();
+	var date = $('#date').val();
+	var operatorname = $('#operatorname').val();
+	var crew  = $('#crew').val();
+	if(crew!='-1')
+	{
+		/* $.ajax({
+		url:'${checkURL}',
+		type:'POST',
+		data:{
+			date :date,
+			position:position					
+		},
+		success:function(data){
+			
+			if(data.check==true){
+				var entry=confirm("Entry Already Exist. Do You Want To Edit");
+				if(entry==true)
+				{
+					location.href="./../frpobccCommon/select?position="+position+"&date="+date+"&crew="+crew;
+				}
+				else
+					location.href="./../frpobccCommon/view?position="+position+"&date="+date+"&crew="+crew;
+			}
+			else
+				location.href="./../frpobccCommon/select?position="+position+"&date="+date+"&crew="+crew;
+		},
+		error: function(xhr, status, error) {
+			alert('Server error.. :-()' );
+			
+		}
+	}); */
+	location.href="./../frpobccCommon/select?position="+position+"&date="+date+"&crew="+crew;
+	}
+	else
+	{
+		if(!alert('Please first select the Crew')){window.location.reload();}
+	}
+}
+</script> 
+<style type="text/css">
+.button{
+ text-decoration:none; 
+ text-align:center; 
+ padding:11px 32px; 
+ border:solid 1px #004F72; 
+ -webkit-border-radius:4px;
+ -moz-border-radius:4px; 
+ border-radius: 4px; 
+ font:18px Arial, Helvetica, sans-serif; 
+ font-weight:bold; 
+ color:#E5FFFF; 
+ background-color:#3BA4C7; 
+ background-image: -moz-linear-gradient(top, #3BA4C7 0%, #1982A5 100%); 
+ background-image: -webkit-linear-gradient(top, #3BA4C7 0%, #1982A5 100%); 
+ background-image: -o-linear-gradient(top, #3BA4C7 0%, #1982A5 100%); 
+ background-image: -ms-linear-gradient(top, #3BA4C7 0% ,#1982A5 100%); 
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1982A5', endColorstr='#1982A5',GradientType=0 ); 
+ background-image: linear-gradient(top, #3BA4C7 0% ,#1982A5 100%);   
+ -webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
+ -moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
+ box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;  
+  
+  }
+  .wrapper {
+    text-align: center;
+}
+.input{
+margin-left: 66px;
+float: right;
+height: 19px;
+width: 100px;
+text-align:center;
+}
+
+ 
+</style>
+<script type="text/javascript">
+	$(function(){
+		var wid = 900;
+		$('#printBtn').click(function(){
+			$('#tbbl').width(wid)
+			$("#checkpoint").css( { marginLeft : "-284px"} );
+			$('#div_show').show();
+			$('#printDiv').printArea();
+			$('#tbbl').width(800)
+			$("#checkpoint").css( { marginLeft : "-356px" } );
+			$('#div_show').hide();
+		});
+	});
+	
+	function validateform()
+	{
+		$('#loadPage').show();
+	}
+	
+</script>
+<script type="text/javascript" src='<spring:url value="/resources/js/jquery.PrintArea.js"/>'></script>
+<script type="text/javascript">
+$(function(){
+	$('#printBtn').click(function(){
+		$('#tbbl td').css("fontSize", 25);
+		$('#tbbl td h2').css("fontSize", 25);
+		$('#tbbl td span').css("fontSize", 25);
+		$('#printDiv').printArea();
+	});
+});
+</script> 
+<script type="text/javascript">
+$(function(){
+	$('#printBtn1').click(function(){
+		$('#tbbl td').css("fontSize", 25);
+		$('#tbbl td h2').css("fontSize", 25);
+		$('#tbbl td span').css("fontSize", 25);
+		$('#printDiv').printArea();
+	});
+});
+</script> 
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+			<jsp:include page="../header.jsp"></jsp:include>
+<div class="content-wrapper" style=" padding-top: 0px !important; background-color: #d4d8e559 !important;">
+	<div class="pageContent">
+	<div class="block3" style="overflow: auto;">
+		
+		<c:if test="${data.position == 'OP5'}">	
+			<spring:url value="/frpobccCommon/OpRoute_5/save" var="viewURL"/>
+		</c:if>	
+		 		
+			
+		 <form name="dataForm" action="${viewURL}" method="post" onsubmit="validateform()">
+			<div class="pageContent">
+
+				<div class="page-title">
+					<span class="label">Operator Route 5 Basement</span>
+				</div>
+				<div class="table-selector">
+					
+				
+					
+					
+			 <input type="hidden" name="id" value="${data.id}"> 
+	
+					<table style="margin: auto;">
+						<tr>
+						<td> Date:</td>
+							  <td>
+								<input type="text" readonly name="date" value="${data.date}" id="date">							
+							</td>
+							<td> Crew:</td>
+							<td>
+								 <select style="width: 100%;" name="crew" id="crew">
+								    <option value="-1">Select Crew</option>
+								 	<option value="A" ${data.crew == 'A' ? 'selected' : ''}>A</option>
+								 	<option value="B" ${data.crew == 'B' ? 'selected' : ''}>B</option>
+								 	<option value="C" ${data.crew == 'C' ? 'selected' : ''}>C</option>
+								 	<option value="D" ${data.crew == 'D' ? 'selected' : ''}>D</option>								 
+								 </select>							
+							</td>
+							<td> Area:</td>
+							 <td>
+								 <select style="width: 100%;" name="position" id="operator" onchange="operatorSelect(this.value);">
+								    <option value="-1">Select Operator</option>
+								 	<option value="OP1" ${data.position == 'OP1' ? 'selected' : ''}>Process Floor 1</option>
+								 	<option value="OP2" ${data.position == 'OP2' ? 'selected' : ''}>Process Floor 2</option>
+								 	<option value="OP3" ${data.position == 'OP3' ? 'selected' : ''}>Process Floor 3</option>
+								 	<option value="OP4" ${data.position == 'OP4' ? 'selected' : ''}>Basement 4</option>
+								 	<option value="OP5" ${data.position == 'OP5' ? 'selected' : ''}>Basement 5</option>
+								 	<option value="OP6" ${data.position == 'OP6' ? 'selected' : ''}>Basement 6</option>
+								 	<option value="OP7" ${data.position == 'OP7' ? 'selected' : ''}>Outside 7</option>
+								 	<option value="OP8" ${data.position == 'OP8' ? 'selected' : ''}>Outside 8</option>
+								 	<option value="OP9" ${data.position == 'OP9' ? 'selected' : ''}>B Line Basement 9</option>								 	
+							</td>  							
+							<%-- <td> Operator Name:</td>
+							<td>
+								  <input type="text" name="operatorname" value="${data.operatorname}" id="operatorname"/>						
+							</td> --%>							
+							<%-- <td> Shift:</td>
+							<td>
+								 <select style="width: 100%;" name="shift" onchange="operatorSelect(this.value);" id="shift">
+								    <option value="-1">Select Shift</option>
+								 	<option value="day" ${data.shift == 'day' ? 'selected' : ''}>Day</option>
+								 	<option value="night" ${data.shift == 'night' ? 'selected' : ''}>Night</option>
+								 </select>							
+							</td>  --%>
+							<td>
+								<button type="button" id="printBtn">Print</button>
+							</td>
+	 					</tr>
+					</table>
+					 
+				</div>
+ 			 <c:if test="${not empty message }">
+				<span class="message">${message}</span>
+			 </c:if>
+ 
+ <br/> <br/>  <br/>
+
+ <c:if test="${data.position == 'OP5'}">
+   <div id="printDiv">
+   		 <center>
+   		 <c:if test="${data.position == 'OP5'}">
+		   	<h1 style="font-size: 21px;color: #518f3e;">Operator Route 5 Basement</h1>
+		 </c:if>
+		 	<div style="display:none;" id="div_show">
+		 		<div>
+		 			<h1 style= "float: left;font-size: 19px;">Operator Route 5 Basement</h1>
+		 		</div>
+		 		<div style="float: right;}">
+		 			<span><b style="font-size: 15px;">Operator : </b>${data.operatorname}</span>
+		 		</div>
+		 		<div style="float: right;    margin-right: -130px;">
+		 		 <br/>
+		 			<span><b style="font-size: 15px;">Date:</b>${data.date}</span> &nbsp;&nbsp;&nbsp;
+		 			<%-- <span><b style="font-size: 15px;">Shift:</b>${data.shift}</span>  --%>
+		 		</div>
+		 	</div>	
+		 	
+		 				<%-- <h1 style="font-size: 21px;color:#f5070b;style="text-align: center;">Machine Down</h1>
+						  	<h3>
+						    	<input type="radio" value="true" ${data.machinedown == 'true' ? 'checked' : ''} name="machinedown"/> Yes  
+						    	<input type="radio" value="false" ${data.machinedown == 'false' ? 'checked' : ''} name="machinedown"/> No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						   </h3> --%> 
+				 <table border="1" style="width:75%" id="tbbl">				
+						<tr>					    
+						    <td class="tg-yw4l" ><h1>TECHNICIANS INITIALS</h1></td>
+						    <td>
+								<input type="text" class="input" value="${data.techniciansinitials_freq}"  name="techniciansinitials_freq" style="margin-left: 1px !important;float: none;"/>
+							</td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.techniciansinitials_9am}"  name="techniciansinitials_9am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.techniciansinitials_1pm}"  name="techniciansinitials_1pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.techniciansinitials_5pm}"  name="techniciansinitials_5pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.techniciansinitials_9pm}"  name="techniciansinitials_9pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.techniciansinitials_1am}"  name="techniciansinitials_1am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.techniciansinitials_5am}"  name="techniciansinitials_5am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>
+						<tr>
+							<td class="tg-yw4l" ><h1>STATION - EQUIPMENT</h1></td>	
+						    <td  class="input" style="margin-left: 1px !important;text-align: center;float: none;"><h1>FREQ</h1></td>
+						    <td  class="input" style="margin-left: 1px !important;text-align: center;float: none;"><h1> 10:00 AM</h1></td>
+						    <td  class="input" style="margin-left: 1px !important;text-align: center;float: none;"><h1> 02:00 PM</h1></td>
+						    <td  class="input" style="margin-left: 1px !important;text-align: center;float: none;"><h1> 06:00 PM</h1></td>
+						    <td  class="input" style="margin-left: 1px !important;text-align: center;float: none;"><h1> 10:00 PM</h1></td>
+						    <td  class="input" style="margin-left: 1px !important;text-align: center;float: none;"><h1> 02:00 AM</h1></td>
+						    <td  class="input" style="margin-left: 1px !important;text-align: center;float: none;"><h1> 06:00 AM</h1></td>
+						  </tr>
+						  <tr>	
+						  <td></td>  <td></td> 
+							<td align="center" id="ok1"><input id="ok"  type="checkbox" style="width:15px;height:20px;margin-top: 4px;" value="ok" name="ok" ${data.ok == 'ok' ? 'checked' : ''}></td>
+							<td align="center" id="ok2"><input id="button1pm" type="checkbox" style="width:15px;height:20px;margin-top: 4px;" value="button1pm" name="button1pm" ${data.button1pm == 'button1pm' ? 'checked' : ''}></td>
+							<td align="center" id="ok3"><input id="button5pm" type="checkbox" style="width:15px;height:20px;margin-top: 4px;" value="button5pm" name="button5pm" ${data.button5pm == 'button5pm' ? 'checked' : ''}></td>
+							<td align="center" id="ok4"><input id="button9pm" type="checkbox" style="width:15px;height:20px;margin-top: 4px;" value="button9pm" name="button9pm" ${data.button9pm == 'button9pm' ? 'checked' : ''}></td>
+							<td align="center" id="ok5"><input id="button1am" type="checkbox" style="width:15px;height:20px;margin-top: 4px;" value="button1am" name="button1am" ${data.button1am == 'button1am' ? 'checked' : ''}></td>
+							<td align="center" id="ok6"><input id="button5am" type="checkbox" style="width:15px;height:20px;margin-top: 4px;" value="button5am" name="button5am" ${data.button5am == 'button5am' ? 'checked' : ''}></td>
+						 </tr>
+						  </tr>
+						 <tr>						 
+							<td class="tg-yw4l" ><h1>Visual check of U Drains for stock</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>3</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock1_10am}"  name="visualcheckofudrainsforstock1_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock1_02pm}" disabled name="visualcheckofudrainsforstock1_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock1_06pm}"  name="visualcheckofudrainsforstock1_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock1_10pm}" disabled name="visualcheckofudrainsforstock1_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock1_02am}"  name="visualcheckofudrainsforstock1_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock1_06am}" disabled name="visualcheckofudrainsforstock1_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>TERTIARY FWD CLNR TK AGITATOR</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock2_10am}"  name="visualcheckofudrainsforstock2_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock2_02pm}"  name="visualcheckofudrainsforstock2_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock2_06pm}"  name="visualcheckofudrainsforstock2_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock2_10pm}"  name="visualcheckofudrainsforstock2_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock2_02am}"  name="visualcheckofudrainsforstock2_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock2_06am}"  name="visualcheckofudrainsforstock2_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>TERTIARY FWD CLNR FEED PUMP</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock3_10am}"  name="visualcheckofudrainsforstock3_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock3_02pm}"  name="visualcheckofudrainsforstock3_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock3_06pm}"  name="visualcheckofudrainsforstock3_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock3_10pm}"  name="visualcheckofudrainsforstock3_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock3_02am}"  name="visualcheckofudrainsforstock3_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock3_06am}"  name="visualcheckofudrainsforstock3_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Primary Forward Clnr Feed Pump </h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock4_10am}"  name="visualcheckofudrainsforstock4_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock4_02pm}"  name="visualcheckofudrainsforstock4_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock4_06pm}"  name="visualcheckofudrainsforstock4_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock4_10pm}"  name="visualcheckofudrainsforstock4_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock4_02am}"  name="visualcheckofudrainsforstock4_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock4_06am}"  name="visualcheckofudrainsforstock4_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Primary Forward Clnr Chest Agitator </h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock5_10am}"  name="visualcheckofudrainsforstock5_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock5_02pm}"  name="visualcheckofudrainsforstock5_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock5_06pm}"  name="visualcheckofudrainsforstock5_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock5_10pm}"  name="visualcheckofudrainsforstock5_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock5_02am}"  name="visualcheckofudrainsforstock5_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock5_06am}"  name="visualcheckofudrainsforstock5_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>BASEMENT HVAC SYSTEMS</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock6_10am}"  name="visualcheckofudrainsforstock6_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock6_02pm}"  name="visualcheckofudrainsforstock6_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock6_06pm}"  name="visualcheckofudrainsforstock6_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock6_10pm}"  name="visualcheckofudrainsforstock6_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock6_02am}"  name="visualcheckofudrainsforstock6_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock6_06am}"  name="visualcheckofudrainsforstock6_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						 <tr>						 
+							<td class="tg-yw4l" ><h1>MCC ROOM CHECK FOR A/C OPERATION</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>3</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock7_10am}"  name="visualcheckofudrainsforstock7_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock7_02pm}"  disabled  name="visualcheckofudrainsforstock7_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock7_06pm}"  name="visualcheckofudrainsforstock7_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock7_10pm}"  disabled  name="visualcheckofudrainsforstock7_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock7_02am}"  name="visualcheckofudrainsforstock7_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock7_06am}"  disabled  name="visualcheckofudrainsforstock7_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>   
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Secondary Forward Clnr Feed Pump </h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock8_10am}"  name="visualcheckofudrainsforstock8_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock8_02pm}"  name="visualcheckofudrainsforstock8_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock8_06pm}"  name="visualcheckofudrainsforstock8_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock8_10pm}"  name="visualcheckofudrainsforstock8_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock8_02am}"  name="visualcheckofudrainsforstock8_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock8_06am}"  name="visualcheckofudrainsforstock8_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Secondary Forward Clnr Chest Agitator </h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock9_10am}"  name="visualcheckofudrainsforstock9_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock9_02pm}"  name="visualcheckofudrainsforstock9_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock9_06pm}"  name="visualcheckofudrainsforstock9_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock9_10pm}"  name="visualcheckofudrainsforstock9_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock9_02am}"  name="visualcheckofudrainsforstock9_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock9_06am}"  name="visualcheckofudrainsforstock9_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Floatation Feed Pump</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock10_10am}"  name="visualcheckofudrainsforstock10_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock10_02pm}"  name="visualcheckofudrainsforstock10_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock10_06pm}"  name="visualcheckofudrainsforstock10_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock10_10pm}"  name="visualcheckofudrainsforstock10_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock10_02am}"  name="visualcheckofudrainsforstock10_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock10_06am}"  name="visualcheckofudrainsforstock10_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Flotation Feed Chest Agitator</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock11_10am}"  name="visualcheckofudrainsforstock11_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock11_02pm}"  name="visualcheckofudrainsforstock11_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock11_06pm}"  name="visualcheckofudrainsforstock11_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock11_10pm}"  name="visualcheckofudrainsforstock11_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock11_02am}"  name="visualcheckofudrainsforstock11_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock11_06am}"  name="visualcheckofudrainsforstock11_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Primary Fine Screen Feed Pump (B-Line)</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock12_10am}"  name="visualcheckofudrainsforstock12_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock12_02pm}"  name="visualcheckofudrainsforstock12_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock12_06pm}"  name="visualcheckofudrainsforstock12_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock12_10pm}"  name="visualcheckofudrainsforstock12_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock12_02am}"  name="visualcheckofudrainsforstock12_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock12_06am}"  name="visualcheckofudrainsforstock12_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Primary Fine Screen Agitator (B-Line)</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock13_10am}"  name="visualcheckofudrainsforstock13_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock13_02pm}"  name="visualcheckofudrainsforstock13_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock13_06pm}"  name="visualcheckofudrainsforstock13_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock13_10pm}"  name="visualcheckofudrainsforstock13_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock13_02am}"  name="visualcheckofudrainsforstock13_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock13_06am}"  name="visualcheckofudrainsforstock13_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Secondary Coarse Screen Feed Pump</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock14_10am}"  name="visualcheckofudrainsforstock14_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock14_02pm}"  name="visualcheckofudrainsforstock14_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock14_06pm}"  name="visualcheckofudrainsforstock14_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock14_10pm}"  name="visualcheckofudrainsforstock14_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock14_02am}"  name="visualcheckofudrainsforstock14_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock14_06am}"  name="visualcheckofudrainsforstock14_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Secondary Coarse Screen Agitator</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock15_10am}"  name="visualcheckofudrainsforstock15_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock15_02pm}"  name="visualcheckofudrainsforstock15_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock15_06pm}"  name="visualcheckofudrainsforstock15_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock15_10pm}"  name="visualcheckofudrainsforstock15_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock15_02am}"  name="visualcheckofudrainsforstock15_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock15_06am}"  name="visualcheckofudrainsforstock15_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Tertiary Coarse Screen Feed Pump</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock16_10am}"  name="visualcheckofudrainsforstock16_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock16_02pm}"  name="visualcheckofudrainsforstock16_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock16_06pm}"  name="visualcheckofudrainsforstock16_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock16_10pm}"  name="visualcheckofudrainsforstock16_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock16_02am}"  name="visualcheckofudrainsforstock16_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock16_06am}"  name="visualcheckofudrainsforstock16_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>		 
+							<td class="tg-yw4l" ><h1>Tertiary Coarse Screen Agitator</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock17_10am}"  name="visualcheckofudrainsforstock17_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock17_02pm}"  name="visualcheckofudrainsforstock17_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock17_06pm}"  name="visualcheckofudrainsforstock17_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock17_10pm}"  name="visualcheckofudrainsforstock17_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock17_02am}"  name="visualcheckofudrainsforstock17_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock17_06am}"  name="visualcheckofudrainsforstock17_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Secondary Fine Screen Feed Pump (B-Line)</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock18_10am}"  name="visualcheckofudrainsforstock18_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock18_02pm}"  name="visualcheckofudrainsforstock18_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock18_06pm}"  name="visualcheckofudrainsforstock18_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock18_10pm}"  name="visualcheckofudrainsforstock18_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock18_02am}"  name="visualcheckofudrainsforstock18_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock18_06am}"  name="visualcheckofudrainsforstock18_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>Secondary Fine Screen Agitator (B-Line)</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock19_10am}"  name="visualcheckofudrainsforstock19_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock19_02pm}"  name="visualcheckofudrainsforstock19_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock19_06pm}"  name="visualcheckofudrainsforstock19_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock19_10pm}"  name="visualcheckofudrainsforstock19_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock19_02am}"  name="visualcheckofudrainsforstock19_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock19_06am}"  name="visualcheckofudrainsforstock19_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>REJECTS TANK FEED PUMP</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock20_10am}"  name="visualcheckofudrainsforstock20_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock20_02pm}"  name="visualcheckofudrainsforstock20_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock20_06pm}"  name="visualcheckofudrainsforstock20_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock20_10pm}"  name="visualcheckofudrainsforstock20_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock20_02am}"  name="visualcheckofudrainsforstock20_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock20_06am}"  name="visualcheckofudrainsforstock20_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>REJECTS TANK AGITIATOR</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock21_10am}"  name="visualcheckofudrainsforstock21_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock21_02pm}"  name="visualcheckofudrainsforstock21_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock21_06pm}"  name="visualcheckofudrainsforstock21_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock21_10pm}"  name="visualcheckofudrainsforstock21_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock21_02am}"  name="visualcheckofudrainsforstock21_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.visualcheckofudrainsforstock21_06am}"  name="visualcheckofudrainsforstock21_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>
+							<td class="tg-yw4l" style="text-align: center;" ><h1 style="font-size: 15px;">TOTES</h1></td>
+						</tr>
+						<tr>						 
+							<td class="tg-yw4l" ><h1>DEFOAMER TOTE LEVELS - Refill if  1/8 tote</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>3</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.totes1_10am}"  name="totes1_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.totes1_02pm}"  disabled  name="totes1_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes1_06pm}"  name="totes1_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes1_10pm}"  disabled  name="totes1_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes1_02am}"  name="totes1_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes1_06am}"  disabled  name="totes1_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>CLEAN MAINT. SHOP & OIL STORAGE</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>2</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.totes2_10am}"  disabled  name="totes2_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.totes2_02pm}"  name="totes2_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes2_06pm}"  disabled  name="totes2_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes2_10pm}"  disabled  name="totes2_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes2_02am}"  name="totes2_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.totes2_06am}"  disabled  name="totes2_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>
+							<td class="tg-yw4l" style="text-align: center;" ><h1 style="font-size: 15px;">TUBE CONVEYOR DRIVE </h1></td>
+						</tr>
+						<tr>						 
+							<td class="tg-yw4l" ><h1>WALK BY & VISUAL</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive1_10am}"  name="tubeconveyordrive1_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive1_02pm}"  name="tubeconveyordrive1_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive1_06pm}"  name="tubeconveyordrive1_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive1_10pm}"  name="tubeconveyordrive1_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive1_02am}"  name="tubeconveyordrive1_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive1_06am}"  name="tubeconveyordrive1_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>TAKE UP ROLL AND TROLLEY VISUAL</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive2_10am}"  name="tubeconveyordrive2_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive2_02pm}"  name="tubeconveyordrive2_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive2_06pm}"  name="tubeconveyordrive2_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive2_10pm}"  name="tubeconveyordrive2_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive2_02am}"  name="tubeconveyordrive2_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive2_06am}"  name="tubeconveyordrive2_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>COUNTERWEIGHT VISUAL</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive3_10am}"  name="tubeconveyordrive3_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive3_02pm}"  name="tubeconveyordrive3_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive3_06pm}"  name="tubeconveyordrive3_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive3_10pm}"  name="tubeconveyordrive3_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive3_02am}"  name="tubeconveyordrive3_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive3_06am}"  name="tubeconveyordrive3_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  
+						<tr>						 
+							<td class="tg-yw4l" ><h1>TRACKING ADJUSTMENT</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive4_10am}"  name="tubeconveyordrive4_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive4_02pm}"  name="tubeconveyordrive4_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive4_06pm}"  name="tubeconveyordrive4_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive4_10pm}"  name="tubeconveyordrive4_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive4_02am}"  name="tubeconveyordrive4_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive4_06am}"  name="tubeconveyordrive4_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr> 
+						<tr>						 
+							<td class="tg-yw4l" ><h1>BELT POSITION (East,West,On/Off Pulley)</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1>6</h1></td>
+							<td>						   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive5_10am}"  name="tubeconveyordrive5_10am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>					   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive5_02pm}"  name="tubeconveyordrive5_02pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive5_06pm}"  name="tubeconveyordrive5_06pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive5_10pm}"  name="tubeconveyordrive5_10pm" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive5_02am}"  name="tubeconveyordrive5_02am" style="margin-left: 1px !important;float: none;"/>	
+							</td>
+							<td>				   					    		   
+								<input type="text" class="input" value="${data.tubeconveyordrive5_06am}"  name="tubeconveyordrive5_06am" style="margin-left: 1px !important;float: none;"/>					   					    		   
+							</td>
+						</tr>  	
+						<tr>
+							<td style="text-align:center;background-color:powderblue;color:blue;font-size:16px;" >MISEED ROUND </td>
+							<td></td>
+							<td align="center"><input id="cmt9am" type="checkbox" ${data.cmt9amarea.length() >0 ? 'checked' : ''} style="width:20px;height:20px;margin-top: 6px;"></td>
+							<td align="center"><input id="cmt1pm" type="checkbox" ${data.cmt1pmarea.length() >0 ? 'checked' : ''} style="width:20px;height:20px;margin-top: 4px;"></td>
+							<td align="center"><input id="cmt5pm" type="checkbox" ${data.cmt5pmarea.length() >0 ? 'checked' : ''} style="width:20px;height:20px;margin-top: 4px;"></td>
+							<td align="center"><input id="cmt9pm" type="checkbox" ${data.cmt9pmarea.length() >0 ? 'checked' : ''} style="width:20px;height:20px;margin-top: 4px;"></td>
+							<td align="center"><input id="cmt1am" type="checkbox" ${data.cmt1amarea.length() >0 ? 'checked' : ''} style="width:20px;height:20px;margin-top: 4px;"></td>
+							<td align="center"><input id="cmt5am" type="checkbox" ${data.cmt5amarea.length() >0 ? 'checked' : ''} style="width:20px;height:20px;margin-top: 4px;"></td>
+						</tr>
+						<tr >
+							<td class="tg-yw4l" style="text-align: center;" ><h1 style="font-size: 15px;">Missed Reason</h1></td>
+							<td class="tg-yw4l" style="text-align: center;"><h1></h1></td>
+							<td >
+								<input type="text" disabled  id="cmt9amarea" class="input" value="${data.cmt9amarea}"  name="cmt9amarea" style="margin-left: 1px !important;float: none;"/>
+							</td>
+							<td >
+								<input type="text" disabled  id="cmt1pmarea"class="input" value="${data.cmt1pmarea}"  name="cmt1pmarea" style="margin-left: 1px !important;float: none;" />
+							</td>
+							<td  >
+								<input type="text" disabled  id="cmt5pmarea"class="input" value="${data.cmt5pmarea}"  name="cmt5pmarea" style="margin-left: 1px !important;float: none;" />
+							</td>
+							<td   >
+								<input type="text" disabled  id="cmt9pmarea"class="input" value="${data.cmt9pmarea}"  name="cmt9pmarea"  style="margin-left: 1px !important;float: none;"/>
+							</td>
+							<td  >
+								<input type="text" disabled  id="cmt1amarea" class="input" value="${data.cmt1amarea}"  name="cmt1amarea" style="margin-left: 1px !important;float: none;" />
+							</td>
+							<td  >
+								<input type="text" disabled  id="cmt5amarea" class="input" value="${data.cmt5amarea}"  name="cmt5amarea"  style="margin-left: 1px !important;float: none;"/>
+							</td>
+						</tr>										
+				</table>
+				 <table border="1" style="width:75%">		
+				 	 <tr>
+						<td width="30%"><h1 style="font-size: 15px;">COMMENTS :</h1></td>
+						<td height="30">
+							<p><textarea name="comments" cols="110" rows="5"><c:out value="${data.comments}"/></textarea></p>
+						</td>					   					    		   
+						</tr>	
+				  </table>
+		    </center>
+		 </div>
+		 		 
+			   <c:choose>
+			    <c:when test="${edit == 'yes'}">
+			       <div class="wrapper">
+						<br /><br />
+						<button type="button" id="printBtn1" class="button">Print</button>
+						<button class="button" type="submit"onclick="bClick()">Submit</button>
+					</div>
+			    </c:when>
+			  
+			    <c:otherwise>
+			        <div class="wrapper">
+						<br /><br />
+						<button type="button" id="printBtn1" class="button">Print</button>
+						<button class="button" type="submit"onclick="bClick()">Submit</button>
+					</div>
+			    </c:otherwise>
+			</c:choose>
+			
+ 	</c:if>	
+ 	</div>		
+	  </form>		
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+    	   if(document.getElementById("cmt9am").checked==true&&document.getElementById("ok").checked==true)
+    	   {
+    		   $('#ok1').css({"background-color":"red"});
+    		}
+    	   if(document.getElementById("cmt1pm").checked==true&&document.getElementById("button1pm").checked==true)
+    	   {
+    		   $('#ok2').css({"background-color":"red"});
+    	   }
+    	   if(document.getElementById("cmt5pm").checked==true&&document.getElementById("button5pm").checked==true)
+    	   {
+    		   $('#ok3').css({"background-color":"red"});
+    	   }
+    	   if(document.getElementById("cmt9pm").checked==true&&document.getElementById("button9pm").checked==true)
+    	   {
+    		   $('#ok4').css({"background-color":"red"});
+    	   }
+    	   if(document.getElementById("cmt1am").checked==true&&document.getElementById("button1am").checked==true)
+    	   {
+    		   $('#ok5').css({"background-color":"red"});
+    	   }
+    	   if(document.getElementById("cmt5am").checked==true&&document.getElementById("button5am").checked==true)
+    	   {
+    		   $('#ok6').css({"background-color":"red"});
+    	   }	
+	});
+	var idClicked;
+	 $(document).ready(function() {
+		 var count=0
+	       $("input").click(function() { 	    	  
+	    	   var checkBox = document.getElementById("cmt9am");
+	    	   if(checkBox.checked==true&&idClicked==="cmt9am"){
+	    		   var cmt9amarea= $('#cmt9amarea').val();
+	    		   var ok= document.getElementById("ok");	    			   
+	    		   if(cmt9amarea==''&&ok.checked==false)
+	    		  	 var miss = prompt("Please give  Reson for Missed Entry", "");
+	    		   else
+	    			  alert("Data already submitted");
+	    		   if(miss!=''&&miss!=null&&document.getElementById("ok").checked!=true){
+	    			  // $( "#ok" ).trigger( "click");
+	    			// $("input[name='cmt9amarea']").prop('disabled', false);
+	    			   $("input[name='cmt9amarea']").val(miss);
+	    		   }else
+	    			   $( "#cmt9am" ).prop( "checked", false );	
+	    	   }	    		   
+	    	  
+	    	   var checkBox = document.getElementById("cmt1pm");	    	   
+	    	   if(checkBox.checked==true&&idClicked==="cmt1pm"){
+	    		   var cmt1pmarea= $('#cmt1pmarea').val();
+	    		   var ok= document.getElementById("button1pm");
+	    		   if(cmt1pmarea==''&&ok.checked==false)
+	    		  	 var miss = prompt("Please give  Reson for Missed Entry", "");
+	    		   else
+	    			   alert("Reason already submitted");
+	    		   if(miss!=''&&miss!=null&&document.getElementById("button1pm").checked!=true){
+	    			  // $( "#button1pm" ).trigger( "click" );
+	    			//  $("input[name='cmt1pmarea']").prop('disabled', false);
+	    			   $("input[name='cmt1pmarea']").val(miss);
+	    		   }else
+	    			   $( "#cmt1pm" ).prop( "checked", false );	
+	    	   				    			  
+	    	   }
+	    	   var checkBox = document.getElementById("cmt5pm");
+	    	   if(checkBox.checked==true&&idClicked==="cmt5pm"){
+	    		   var cmt5pmarea= $('#cmt5pmarea').val();
+	    		   var ok= document.getElementById("button5pm");
+	    		   if(cmt5pmarea==''&&ok.checked==false)
+	    		  	 var miss = prompt("Please give  Reson for Missed Entry", "");
+	    		   else
+	    			   alert("Reason already submitted");
+	    		   if(miss!=''&&miss!=null&&document.getElementById("button5pm").checked!=true){
+	    			  // $( "#button5pm" ).trigger( "click" );
+	    			 // $("input[name='cmt5pmarea']").prop('disabled', false);
+	    			   $("input[name='cmt5pmarea']").val(miss);
+	    		   }else
+	    			   $( "#cmt5pm" ).prop( "checked", false );	
+   	   					    			  
+	    	   }
+	    	   var checkBox = document.getElementById("cmt9pm");	    	  
+	    	   if(checkBox.checked==true&&idClicked==="cmt9pm"){
+	    		   var cmt9pmarea= $('#cmt9pmarea').val();
+	    		   var ok= document.getElementById("button9pm");
+	    		   if(cmt9pmarea==''&&ok.checked==false)
+	    		  	 var miss = prompt("Please give  Reson for Missed Entry", "");
+	    		   else
+	    			   alert("Reason already submitted");
+	    		   if(miss!=''&&miss!=null&&document.getElementById("button9pm").checked!=true){
+	    			 //  $( "#button9pm" ).trigger( "click" );
+	    			//  $("input[name='cmt9pmarea']").prop('disabled', false);
+	    			   $("input[name='cmt9pmarea']").val(miss);
+	    		   }else
+	    			   $( "#cmt9pm" ).prop( "checked", false );	
+	   					    			  
+	    	   }
+	    	   var checkBox = document.getElementById("cmt1am");	    	 
+	    	   if(checkBox.checked==true&&idClicked==="cmt1am"){
+	    		   var cmt1amarea= $('#cmt1amarea').val();
+	    		   var ok= document.getElementById("button1am");
+	    		   if(cmt1amarea==''&&ok.checked==false)
+	    		  	 var miss = prompt("Please give  Reson for Missed Entry", "");
+	    		   else
+	    			   alert("Reason already submitted");
+	    		   if(miss!=''&&miss!=null&&document.getElementById("button1am").checked!=true){
+	    			 //  $( "#button1am" ).trigger( "click" );
+	    			//  $("input[name='cmt1amarea']").prop('disabled', false);
+	    			   $("input[name='cmt1amarea']").val(miss);
+	    		   }else
+	    			   $( "#cmt1am" ).prop( "checked", false );	
+  					    			  
+	    	   }
+	    	   var checkBox = document.getElementById("cmt5am");
+	    	   if(checkBox.checked==true&&idClicked==="cmt5am"){
+	    		   var cmt5amarea= $('#cmt5amarea').val();
+	    		   var ok= document.getElementById("button5am");
+	    		   if(cmt5amarea==''&&ok.checked==false)
+	    		  	 var miss = prompt("Please give  Reson for Missed Entry", "");
+	    		   else
+	    			   alert("Reason already submitted");
+	    		   if(miss!=''&&miss!=null&&document.getElementById("button5am").checked!=true){
+	    			 //  $( "#button5am" ).trigger( "click" );
+	    			 //  $("input[name='cmt5amarea']").prop('disabled', false);
+	    			   $("input[name='cmt5amarea']").val(miss);
+	    		   }else
+	    			   $( "#cmt5am" ).prop( "checked", false );	
+ 					 	    			  
+	    	   }
+	       });
+		 
+	 });
+	 $(document).ready(function() { 
+       $("input").click(function() {
+    	   var checkBox = document.getElementById("ok");
+    	   var checkBox2 = document.getElementById("button1pm");
+    	   var checkBox3 = document.getElementById("button5pm");
+    	   var checkBox4 = document.getElementById("button9pm");
+    	   var checkBox5 = document.getElementById("button1am");
+    	   var checkBox6 = document.getElementById("button5am");
+    	   /*  var cmt9amarea= $('#cmt9amarea').val();
+    	   var cmt1pmarea= $('#cmt1pmarea').val();
+    	   var cmt5pmarea= $('#cmt5pmarea').val();
+    	   var cmt9pmarea= $('#cmt9pmarea').val();
+    	   var cmt1amarea= $('#cmt1amarea').val();
+    	   var cmt5amarea= $('#cmt5amarea').val();
+    	  	if(checkBox.checked==true && cmt9amarea!='')
+    		{
+    		  alert("Missed Entry already filled");
+    		  location.reload();
+    		}else if(checkBox2.checked==true && cmt1pmarea!='')
+    		{
+      		  alert("Missed Entry already filled");
+      		  location.reload();
+      		}else if(checkBox3.checked==true && cmt5pmarea!='')
+    		{
+        		  alert("Missed Entry already filled");
+        		  location.reload();
+        		}else if(checkBox4.checked==true && cmt9pmarea!='')
+        		{
+            		  alert("Missed Entry already filled");
+            		  location.reload();
+            		}else if(checkBox5.checked==true && cmt1amarea!='')
+            		{
+                		  alert("Missed Entry already filled");
+                		  location.reload();
+                		}else if(checkBox6.checked==true && cmt5amarea!='')
+                		{
+                    		  alert("Missed Entry already filled");
+                    		  location.reload();
+                    		} */
+    	  	
+    	  	var position  = $('#operator').val();
+    		var date = $('#date').val();
+    	  	$.ajax({
+    			url:'${hitURL}',
+    			type:'POST',
+    			data:{
+    				date :date,
+    				position:position    				
+    			},
+    			success:function(data){
+    				var v1=data.ok1;
+    				var v2=data.ok2;
+    				var v3=data.ok3;
+    				var v4=data.ok4;
+    				var v5=data.ok5;
+    				var v6=data.ok6;  
+    if(idClicked==='ok' && v2!='button1pm'&&document.getElementById("cmt9am").checked==false){ 
+    	 $('input[name="visualcheckofudrainsforstock1_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock2_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock3_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock4_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock5_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock6_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock7_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock8_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock9_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock10_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock11_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock12_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock13_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock14_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock15_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock16_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock17_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock18_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock19_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock20_10am"]').val('OK');
+    	 $('input[name="visualcheckofudrainsforstock21_10am"]').val('OK');
+    	 $('input[name="totes1_10am"]').val('OK');
+    	// $('input[name="totes2_10am"]').val('OK');
+    	 $('input[name="tubeconveyordrive1_10am"]').val('OK');
+    	 $('input[name="tubeconveyordrive2_10am"]').val('OK');
+    	 $('input[name="tubeconveyordrive3_10am"]').val('OK');
+    	 $('input[name="tubeconveyordrive4_10am"]').val('OK');
+    	 $('input[name="tubeconveyordrive5_10am"]').val('OK');
+      }if(checkBox.checked!=true&&idClicked==="ok"){
+    	 $('input[name="visualcheckofudrainsforstock1_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock2_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock3_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock4_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock5_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock6_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock7_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock8_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock9_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock10_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock11_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock12_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock13_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock14_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock15_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock16_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock17_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock18_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock19_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock20_10am"]').val('');
+    	 $('input[name="visualcheckofudrainsforstock21_10am"]').val('');
+    	 $('input[name="totes1_10am"]').val('');
+    	 $('input[name="totes2_10am"]').val('');
+    	 $('input[name="tubeconveyordrive1_10am"]').val('');
+    	 $('input[name="tubeconveyordrive2_10am"]').val('');
+    	 $('input[name="tubeconveyordrive3_10am"]').val('');
+    	 $('input[name="tubeconveyordrive4_10am"]').val('');
+    	 $('input[name="tubeconveyordrive5_10am"]').val('');
+        }    	 
+   if(idClicked==='button1pm'&& v3!='button5pm'&&document.getElementById("cmt1pm").checked==false){ 
+	// $('input[name="visualcheckofudrainsforstock1_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock2_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock3_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock4_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock5_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock6_02pm"]').val('OK');
+		// $('input[name="visualcheckofudrainsforstock7_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock8_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock9_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock10_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock11_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock12_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock13_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock14_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock15_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock16_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock17_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock18_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock19_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock20_02pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock21_02pm"]').val('OK');
+		// $('input[name="totes1_02pm"]').val('OK');
+		 $('input[name="totes2_02pm"]').val('OK');
+		 $('input[name="tubeconveyordrive1_02pm"]').val('OK');
+		 $('input[name="tubeconveyordrive2_02pm"]').val('OK');
+		 $('input[name="tubeconveyordrive3_02pm"]').val('OK');
+		 $('input[name="tubeconveyordrive4_02pm"]').val('OK');
+		 $('input[name="tubeconveyordrive5_02pm"]').val('OK');
+	  }if(checkBox2.checked!=true&&idClicked==="button1pm"){
+		 $('input[name="visualcheckofudrainsforstock1_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock2_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock3_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock4_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock5_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock6_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock7_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock8_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock9_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock10_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock11_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock12_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock13_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock14_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock15_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock16_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock17_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock18_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock19_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock20_02pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock21_02pm"]').val('');
+		 $('input[name="totes1_02pm"]').val('');
+		 $('input[name="totes2_02pm"]').val('');
+		 $('input[name="tubeconveyordrive1_02pm"]').val('');
+		 $('input[name="tubeconveyordrive2_02pm"]').val('');
+		 $('input[name="tubeconveyordrive3_02pm"]').val('');
+		 $('input[name="tubeconveyordrive4_02pm"]').val('');
+		 $('input[name="tubeconveyordrive5_02pm"]').val('');
+	    }  
+   if(idClicked==='button5pm' && v4!='button9pm'&&document.getElementById("cmt5pm").checked==false){ 
+		 $('input[name="visualcheckofudrainsforstock1_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock2_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock3_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock4_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock5_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock6_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock7_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock8_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock9_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock10_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock11_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock12_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock13_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock14_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock15_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock16_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock17_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock18_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock19_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock20_06pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock21_06pm"]').val('OK');
+		 $('input[name="totes1_06pm"]').val('OK');
+		// $('input[name="totes2_06pm"]').val('OK');
+		 $('input[name="tubeconveyordrive1_06pm"]').val('OK');
+		 $('input[name="tubeconveyordrive2_06pm"]').val('OK');
+		 $('input[name="tubeconveyordrive3_06pm"]').val('OK');
+		 $('input[name="tubeconveyordrive4_06pm"]').val('OK');
+		 $('input[name="tubeconveyordrive5_06pm"]').val('OK');
+	  }if(checkBox3.checked!=true&&idClicked==="button5pm"){
+		 $('input[name="visualcheckofudrainsforstock1_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock2_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock3_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock4_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock5_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock6_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock7_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock8_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock9_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock10_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock11_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock12_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock13_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock14_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock15_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock16_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock17_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock18_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock19_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock20_06pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock21_06pm"]').val('');
+		 $('input[name="totes1_06pm"]').val('');
+		 $('input[name="totes2_06pm"]').val('');
+		 $('input[name="tubeconveyordrive1_06pm"]').val('');
+		 $('input[name="tubeconveyordrive2_06pm"]').val('');
+		 $('input[name="tubeconveyordrive3_06pm"]').val('');
+		 $('input[name="tubeconveyordrive4_06pm"]').val('');
+		 $('input[name="tubeconveyordrive5_06pm"]').val('');
+	    }   	 
+   if(idClicked==='button9pm' && v5!='button1am'&&document.getElementById("cmt9pm").checked==false){ 
+	// $('input[name="visualcheckofudrainsforstock1_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock2_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock3_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock4_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock5_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock6_10pm"]').val('OK');
+		// $('input[name="visualcheckofudrainsforstock7_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock8_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock9_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock10_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock11_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock12_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock13_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock14_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock15_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock16_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock17_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock18_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock19_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock20_10pm"]').val('OK');
+		 $('input[name="visualcheckofudrainsforstock21_10pm"]').val('OK');
+		// $('input[name="totes1_10pm"]').val('OK');
+		// $('input[name="totes2_10pm"]').val('OK');
+		 $('input[name="tubeconveyordrive1_10pm"]').val('OK');
+		 $('input[name="tubeconveyordrive2_10pm"]').val('OK');
+		 $('input[name="tubeconveyordrive3_10pm"]').val('OK');
+		 $('input[name="tubeconveyordrive4_10pm"]').val('OK');
+		 $('input[name="tubeconveyordrive5_10pm"]').val('OK');
+	  }if(checkBox4.checked!=true&&idClicked==="button9pm"){
+		 $('input[name="visualcheckofudrainsforstock1_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock2_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock3_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock4_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock5_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock6_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock7_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock8_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock9_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock10_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock11_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock12_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock13_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock14_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock15_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock16_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock17_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock18_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock19_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock20_10pm"]').val('');
+		 $('input[name="visualcheckofudrainsforstock21_10pm"]').val('');
+		 $('input[name="totes1_10pm"]').val('');
+		 $('input[name="totes2_10pm"]').val('');
+		 $('input[name="tubeconveyordrive1_10pm"]').val('');
+		 $('input[name="tubeconveyordrive2_10pm"]').val('');
+		 $('input[name="tubeconveyordrive3_10pm"]').val('');
+		 $('input[name="tubeconveyordrive4_10pm"]').val('');
+		 $('input[name="tubeconveyordrive5_10pm"]').val('');
+	    }  
+ if(idClicked==='button1am' && v6!='button5am'&&document.getElementById("cmt1am").checked==false){ 
+	 $('input[name="visualcheckofudrainsforstock1_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock2_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock3_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock4_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock5_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock6_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock7_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock8_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock9_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock10_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock11_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock12_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock13_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock14_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock15_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock16_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock17_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock18_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock19_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock20_02am"]').val('OK');
+	 $('input[name="visualcheckofudrainsforstock21_02am"]').val('OK');
+	 $('input[name="totes1_02am"]').val('OK');
+	 $('input[name="totes2_02am"]').val('OK');
+	 $('input[name="tubeconveyordrive1_02am"]').val('OK');
+	 $('input[name="tubeconveyordrive2_02am"]').val('OK');
+	 $('input[name="tubeconveyordrive3_02am"]').val('OK');
+	 $('input[name="tubeconveyordrive4_02am"]').val('OK');
+	 $('input[name="tubeconveyordrive5_02am"]').val('OK');
+  }if(checkBox5.checked!=true&&idClicked==="button1am"){
+	 $('input[name="visualcheckofudrainsforstock1_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock2_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock3_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock4_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock5_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock6_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock7_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock8_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock9_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock10_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock11_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock12_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock13_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock14_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock15_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock16_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock17_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock18_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock19_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock20_02am"]').val('');
+	 $('input[name="visualcheckofudrainsforstock21_02am"]').val('');
+	 $('input[name="totes1_02am"]').val('');
+	 $('input[name="totes2_02am"]').val('');
+	 $('input[name="tubeconveyordrive1_02am"]').val('');
+	 $('input[name="tubeconveyordrive2_02am"]').val('');
+	 $('input[name="tubeconveyordrive3_02am"]').val('');
+	 $('input[name="tubeconveyordrive4_02am"]').val('');
+	 $('input[name="tubeconveyordrive5_02am"]').val('');
+    }   	 
+   if(idClicked==='button5am' &&document.getElementById("cmt5am").checked==false){
+		// $('input[name="visualcheckofudrainsforstock1_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock2_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock3_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock4_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock5_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock6_06am"]').val('OK');
+ 		// $('input[name="visualcheckofudrainsforstock7_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock8_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock9_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock10_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock11_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock12_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock13_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock14_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock15_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock16_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock17_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock18_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock19_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock20_06am"]').val('OK');
+ 		 $('input[name="visualcheckofudrainsforstock21_06am"]').val('OK');
+ 		// $('input[name="totes1_06am"]').val('OK');
+ 		// $('input[name="totes2_06am"]').val('OK');
+ 		 $('input[name="tubeconveyordrive1_06am"]').val('OK');
+ 		 $('input[name="tubeconveyordrive2_06am"]').val('OK');
+ 		 $('input[name="tubeconveyordrive3_06am"]').val('OK');
+ 		 $('input[name="tubeconveyordrive4_06am"]').val('OK');
+ 		 $('input[name="tubeconveyordrive5_06am"]').val('OK');
+ 	  }if(checkBox6.checked!=true&&idClicked==="button5am"){
+ 		 $('input[name="visualcheckofudrainsforstock1_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock2_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock3_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock4_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock5_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock6_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock7_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock8_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock9_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock10_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock11_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock12_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock13_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock14_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock15_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock16_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock17_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock18_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock19_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock20_06am"]').val('');
+ 		 $('input[name="visualcheckofudrainsforstock21_06am"]').val('');
+ 		 $('input[name="totes1_06am"]').val('');
+ 		 $('input[name="totes2_06am"]').val('');
+ 		 $('input[name="tubeconveyordrive1_06am"]').val('');
+ 		 $('input[name="tubeconveyordrive2_06am"]').val('');
+ 		 $('input[name="tubeconveyordrive3_06am"]').val('');
+ 		 $('input[name="tubeconveyordrive4_06am"]').val('');
+ 		 $('input[name="tubeconveyordrive5_06am"]').val('');
+ 	    }  
+    			},
+    			error: function(xhr, status, error) {
+    				alert('Server error.. :-(' );
+    				
+    			}
+    		});
+    			
+    	
+       }); 
+   }); 
+	 $("input").click(function(e){
+		     idClicked = e.target.id;
+		});
+	 
+	 function bClick() {
+		 var checkBox1 = document.getElementById("cmt9am");
+		 var checkBox2 = document.getElementById("cmt1pm");
+		 var checkBox3 = document.getElementById("cmt5pm");
+		 var checkBox4 = document.getElementById("cmt9pm");
+		 var checkBox5 = document.getElementById("cmt1am");
+		 var checkBox6 = document.getElementById("cmt5am");
+		 if(checkBox1.checked)
+		 {
+			document.getElementById("ok").checked=true;			
+		 }
+		 if(checkBox2.checked)
+		 {
+			document.getElementById("button1pm").checked=true;			
+		 }
+		 if(checkBox3.checked)
+		 {
+			document.getElementById("button5pm").checked=true;			
+		 }
+		 if(checkBox4.checked)
+		 {
+			document.getElementById("button9pm").checked=true;			
+		 }
+		 if(checkBox5.checked)
+		 {
+			document.getElementById("button1am").checked=true;			
+		 }
+		 if(checkBox6.checked)
+		 {
+			document.getElementById("button5am").checked=true;			
+		 }	
+		 $("input[name='cmt9amarea']").prop('disabled', false);
+		 $("input[name='cmt1pmarea']").prop('disabled', false);
+		 $("input[name='cmt5pmarea']").prop('disabled', false);
+		 $("input[name='cmt9pmarea']").prop('disabled', false);
+		 $("input[name='cmt1amarea']").prop('disabled', false);
+		 $("input[name='cmt5amarea']").prop('disabled', false);
+		}
+	</script>
+</body>
+</html>
+

@@ -1,0 +1,192 @@
+/**
+ * 
+ */
+package com.st.frppressquality.model;
+
+import java.util.Date;
+
+/**
+ * @author sbora
+ *
+ */
+public class FrpPressQuality {
+	private int id;
+	private Date date;
+	private int lot;
+	private String initials;
+//	Code Starts From Here Done BY Roshan Tailor Date :- 04/01/2015
+	private double bleachingchemical;
+//	Code ends Here Done By Roshan Tailor
+	private String grade;
+	private double brightness;
+
+//	Code Starts From Here Done By Roshan Tailor
+	private double lvalue;
+	private double avalue;
+	private double bvalue;
+	
+//	Code Ends Here Done by Roshan Tailor
+	private double dirt;
+	private double stickies;
+	private double consistency;
+	private double ash;
+	private String cuRunning;
+	private String comments;
+	private String qualityType;
+	private double freeness;
+	
+	//	Code Starts From Here Done By Roshan Tailor Date :- 03/24/2015 MM/DD/YYYY
+	private double eric;
+	private String astar;
+	private String bstar;
+	//	Code Ends Here Done By Roshan Tailor	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public int getLot() {
+		return lot;
+	}
+	public void setLot(int lot) {
+		this.lot = lot;
+	}
+	public String getInitials() {
+		return initials;
+	}
+	public void setInitials(String initials) {
+		this.initials = initials;
+	}
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	public double getBrightness() {
+		return brightness;
+	}
+	public void setBrightness(double brightness) {
+		this.brightness = brightness;
+	}
+//	Code Starts From Here Done By Roshan TAilor Date :- 03/30/2015
+	/**
+	 * @return the lvalue
+	 */
+	public double getLvalue() {
+		return lvalue;
+	}
+	/**
+	 * @param lvalue the lvalue to set
+	 */
+	public void setLvalue(double lvalue) {
+		this.lvalue = lvalue;
+	}
+	/**
+	 * @return the avalue
+	 */
+	public double getAvalue() {
+		return avalue;
+	}
+	/**
+	 * @param avalue the avalue to set
+	 */
+	public void setAvalue(double avalue) {
+		this.avalue = avalue;
+	}
+	/**
+	 * @return the bvalue
+	 */
+	public double getBvalue() {
+		return bvalue;
+	}
+	/**
+	 * @param bvalue the bvalue to set
+	 */
+	public void setBvalue(double bvalue) {
+		this.bvalue = bvalue;
+	}
+//	Code Ends Here Done By Roshan Tailor 
+	
+	public double getDirt() {
+		return dirt;
+	}
+	public void setDirt(double dirt) {
+		this.dirt = dirt;
+	}
+	public double getStickies() {
+		return stickies;
+	}
+	public void setStickies(double stickies) {
+		this.stickies = stickies;
+	}
+	public double getConsistency() {
+		return consistency;
+	}
+	public void setConsistency(double consistency) {
+		this.consistency = consistency;
+	}
+	public double getAsh() {
+		return ash;
+	}
+	public void setAsh(double ash) {
+		this.ash = ash;
+	}
+	public String getCuRunning() {
+		return cuRunning;
+	}
+	public void setCuRunning(String cuRunning) {
+		this.cuRunning = cuRunning;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	/**
+	 * @return the qualityType
+	 */
+	public String getQualityType() {
+		return qualityType;
+	}
+	/**
+	 * @param qualityType the qualityType to set
+	 */
+	public void setQualityType(String qualityType) {
+		this.qualityType = qualityType;
+	}
+	public double getFreeness() {
+		return freeness;
+	}
+	public void setFreeness(double freeness) {
+		this.freeness = freeness;
+	}
+	//Code Strats From Here Done By Roshan Tailor Date :- 03/24/2015 MM/DD/YYYY
+	public double getEric() {
+		return eric;
+	}
+	public void setEric(double eric) {
+		this.eric=eric;
+	}
+	public String getAstar() {
+		return astar;
+	}
+	public void setAstar(String astar) {
+		this.astar=astar;
+	}
+	public String getBstar() {
+		return bstar;
+	}
+	public void setBstar(String bstar) {
+	this.bstar=bstar;	
+	}
+	//	Code Ends Here Done By Roshan Tailor}
+}

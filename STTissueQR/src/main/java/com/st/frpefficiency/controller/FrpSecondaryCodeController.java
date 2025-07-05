@@ -1,0 +1,125 @@
+/**
+ * 
+ */
+package com.st.frpefficiency.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.st.frpefficiency.model.FrpPrimaryCode;
+import com.st.frpefficiency.model.FrpSecondaryCode;
+import com.st.frpefficiency.service.FrpEfficiencyCodeService;
+
+/**
+ * @author sbora
+ *
+ */
+@Controller
+@RequestMapping(value="/frpeffsecondarycode")
+public class FrpSecondaryCodeController {
+	private static Logger logger=LoggerFactory.getLogger(FrpSecondaryCodeController.class);
+	@Autowired
+	private FrpEfficiencyCodeService frpEfficiencyCodeService;
+	
+	@RequestMapping(value="/main",method=RequestMethod.GET)
+	public String home(Model model) {
+		
+		model.addAttribute("secondaryCode", new FrpSecondaryCode());
+		model.addAttribute("codes", frpEfficiencyCodeService.getSecondaryCodes());
+		model.addAttribute("primaryCodes", frpEfficiencyCodeService.getPrimaryCodes());
+		
+		return "frpEfficiencySecodaryCode";
+	}
+	
+	@RequestMapping(value="/save",method=RequestMethod.POST)
+	public String save(@ModelAttribute("secondaryCode")FrpSecondaryCode secondaryCode,
+			RedirectAttributes attributes,
+			Model model) {
+		
+		try {
+			if(secondaryCode!=null && !(secondaryCode.getCode().trim()).equals("")){
+				if(secondaryCode.getId()==0){
+					// Insert
+					int id=frpEfficiencyCodeService.add(secondaryCode);
+					logger.info("New Secodary code created with id="+id);
+				}else{
+					// Update
+					frpEfficiencyCodeService.update(secondaryCode);
+					logger.info("Secodary code updated with id="+secondaryCode.getId());
+				}
+			}else{
+				throw new Exception("Invalid secondary code.");
+			}
+		} catch (Exception e) {
+			model.addAttribute("error", "Invalid secodary code");
+			model.addAttribute("secondaryCode", new FrpSecondaryCode());
+			model.addAttribute("codes", frpEfficiencyCodeService.getSecondaryCodes());
+			model.addAttribute("primaryCodes", frpEfficiencyCodeService.getPrimaryCodes());
+			return "frpEfficiencySecodaryCode";
+		}
+		
+		
+		if(secondaryCode.getId()==0){
+			attributes.addFlashAttribute("message", "Secodary code added successfully.");
+		}else{
+			attributes.addFlashAttribute("message", "Secodary code updated successfully.");
+		}
+		return "redirect:/frpeffsecondarycode/main";
+	}
+	
+	@RequestMapping(value="/delete/{id}",method=RequestMethod.GET)
+	public String delete(@PathVariable("id")int id,
+			RedirectAttributes attributes,
+			Model model) {
+		
+		if(id!=0){
+			FrpSecondaryCode code=new FrpSecondaryCode();
+			code.setId(id);
+			frpEfficiencyCodeService.delete(code);
+		}
+		
+		attributes.addFlashAttribute("message", "Secodary code deleted successfully.");
+		
+		return "redirect:/frpeffsecondarycode/main";
+	}
+	
+	@RequestMapping(value="/edit/{id}",method=RequestMethod.GET)
+	public String edit(@PathVariable("id")int id,
+			RedirectAttributes attributes,
+			Model model) {
+		if(id!=0){
+			model.addAttribute("secondaryCode", frpEfficiencyCodeService.getSecondaryCode(id));
+			model.addAttribute("codes", frpEfficiencyCodeService.getSecondaryCodes());
+			model.addAttribute("primaryCodes", frpEfficiencyCodeService.getPrimaryCodes());
+		}
+		
+		return "frpEfficiencySecodaryCode";
+	}
+	
+	@RequestMapping(value="/view/{id}",method=RequestMethod.GET)
+	public String view(@PathVariable("id")int id,
+			Model model) {
+		
+		model.addAttribute("secondaryCode", new FrpSecondaryCode());
+		
+		if(id!=0){
+			FrpPrimaryCode primaryCode=new FrpPrimaryCode();
+			primaryCode.setId(id);
+			model.addAttribute("codes", frpEfficiencyCodeService.getSecondaryCodes(primaryCode));	
+		}else{
+			model.addAttribute("codes", frpEfficiencyCodeService.getSecondaryCodes());
+		}
+		
+		model.addAttribute("primaryCodes", frpEfficiencyCodeService.getPrimaryCodes());
+		
+		return "frpEfficiencySecodaryCode";
+	}
+}

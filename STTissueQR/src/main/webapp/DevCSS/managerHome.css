@@ -1,0 +1,83 @@
+  body{
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(219, 238, 238);
+    
+}
+.container-fluid
+{
+    background-color: rgb(219, 238, 238);
+   overflow-x: auto; /* Enable horizontal scrolling */
+    max-width: 100%; /* Ensure the container does not exceed screen width */
+    
+     max-height: 750px;
+}
+.navbar-custom {
+background-color: #2084c2; /* Set the background color */
+padding-top: 10px; /* Add padding to top of navbar */
+padding-bottom: 10px; /* Add padding to bottom of navbar */
+}
+.navbar-custom .btn {
+margin-right: 20px; /* Adjust spacing between navbar buttons */
+margin-left: 20px;
+}
+.navbar-custom .navbar-text {
+color: #ffffff; /* Set text color */
+margin-right: 40px; /* Adjust spacing between labels and data */
+font-size:20px;
+}
+.navbar-custom .ml-auto {
+margin-left: auto; /* Push logout button to the right */
+}
+.navbar-custom .navbar-brand img {
+margin-left: 10px;
+max-height: 40px; /* Set max height for the logo */
+/* Adjust spacing between logo and text */
+}
+
+ /* Custom background colors for odd and even rows */
+ 
+ 
+ .table tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #e6e6e6;
+            text-align: center;
+        }
+
+        /* Custom background color for table header */
+        .table thead th {
+            background-color: #2084c2; /* Dark background color */
+            color: white; /* Text color */
+            text-align: center;
+            
+        }
+         /* Button hover effect */
+         .btn-warning:hover {
+            background-color: #84b6b2; /* Change to desired hover color */
+            border-color: #2084c2; /* Change border color if needed */
+        }
+        
+        /*footer css  */
+            footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: white; /* Dark background color */
+            color: black; /* Text color */
+            padding: 10px 0; /* Padding top and bottom */
+            text-align: center; /* Center align text */
+        }
+        /* Custom home button styles */
+        .btn-home {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white; /* Text color */
+            border: none; /* No border */
+            transition: background-color 0.3s ease; /* Transition for background color */
+        }
+        .btn-home:hover {
+            background-color: green; /* Darker shade of primary color on hover */
+        }

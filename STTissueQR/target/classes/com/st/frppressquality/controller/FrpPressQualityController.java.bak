@@ -1,0 +1,328 @@
+/**
+ * 
+ */
+package com.st.frppressquality.controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
+import com.st.common.CommonUtil;
+import com.st.common.FrpCommon;
+import com.st.frppressquality.model.FrpPressQuality;
+import com.st.frppressquality.model.SludgeHauling;
+import com.st.frppressquality.service.FrpPressQualityService;
+
+/**
+ * @author sbora
+ *
+ */
+@Controller
+@RequestMapping(value="/frppressquality")
+public class FrpPressQualityController {
+	
+	@Autowired
+	private FrpPressQualityService frpPressQualityService;
+	
+	private SimpleDateFormat dateFormat1=new SimpleDateFormat("MM-dd-yyyy");
+	private SimpleDateFormat timeFormat=new SimpleDateFormat("HH:mm");
+	
+	@RequestMapping(value="/new",method=RequestMethod.GET)
+	public String main(Model model){
+		
+		model.addAttribute("qtypes", FrpCommon.getPressQualityType());
+		
+		return "frpPressQualityNew";
+	}
+	
+	@RequestMapping(value="/new/{type}",method=RequestMethod.GET)
+	public String pageType(@PathVariable("type")String type,
+			Model model){
+		
+		Date sdate=CommonUtil.checkDate(dateFormat1.format(new Date()), dateFormat1);
+		Date edate=sdate;
+		
+		model.addAttribute("qtypes", FrpCommon.getPressQualityType());
+		model.addAttribute("type", type);
+		model.addAttribute("grades", FrpCommon.getPressQualityGrade());
+		model.addAttribute("ynflags", FrpCommon.getYN());
+		model.addAttribute("date", dateFormat1.format(new Date()));
+		//Code Starts From Here Done By Roshan Tailor Date :- 03/24/2015
+		model.addAttribute("astar", FrpCommon.getProductionAStarValue());
+		model.addAttribute("bstar", FrpCommon.getProductionBStarValue());
+		//Code Ends Here Done By Roshan Tailor
+		//Code Starts From Here Done By Roshan Tailor Date :- 03/21/2015
+		if(type.equalsIgnoreCase("TPQ") ||(type.equalsIgnoreCase("TPQ2"))||(type.equalsIgnoreCase("SECPRESSQ")) || type.equalsIgnoreCase("SPC") || type.equalsIgnoreCase("WL")|| type.equalsIgnoreCase("IPSC")){
+			List<FrpPressQuality> qualities=frpPressQualityService.getFrpPressQualities(sdate,edate,type);
+			model.addAttribute("qualities", qualities);
+		//Code Ends Here Done By Roshan Tailor	
+			}else if(type.equalsIgnoreCase("SH")){
+			List<SludgeHauling> sludgeHaulings=frpPressQualityService.getSludgeHauling(sdate,edate);
+			if(sludgeHaulings.size()==0){
+				sludgeHaulings.add(new SludgeHauling());
+			}
+			model.addAttribute("sludgeHaulings", sludgeHaulings);
+		}else if(type.equalsIgnoreCase("IPSC")){
+			
+		}
+		
+		
+		return "frpPressQualityNew";
+	}
+	
+	@RequestMapping(value="/edit/{id}/{type}",method=RequestMethod.GET)
+	public String edit(@PathVariable("id")int id,
+			@PathVariable("type")String type,
+			HttpServletRequest request,
+			Model model){
+		
+		String backParam=request.getQueryString();
+		
+
+		model.addAttribute("qtypes", FrpCommon.getPressQualityType());
+		model.addAttribute("type", type);
+		model.addAttribute("grades", FrpCommon.getPressQualityGrade());
+		model.addAttribute("ynflags", FrpCommon.getYN());
+//		Code Starts From Here Done By Roshan Tailor Date :- 03/27/2015 MM/DD/YYYY
+		model.addAttribute("astar", FrpCommon.getProductionAStarValue());
+		model.addAttribute("bstar", FrpCommon.getProductionBStarValue());
+//		Code Ends Here Done By Roshan Tailor
+		
+		
+		if(type.equalsIgnoreCase("TPQ") || type.equalsIgnoreCase("TPQ2") || type.equalsIgnoreCase("SECPRESSQ") || type.equalsIgnoreCase("SPC") || type.equalsIgnoreCase("WL")|| type.equalsIgnoreCase("IPSC")){
+			FrpPressQuality frpPressQuality=frpPressQualityService.getFrpPressQuality(id);
+			model.addAttribute("date", dateFormat1.format(frpPressQuality.getDate()));
+			
+			List<FrpPressQuality> qualities=new ArrayList<>();
+			if(frpPressQuality!=null){
+				qualities.add(frpPressQuality);
+			}
+			model.addAttribute("qualities", qualities);
+		}else if(type.equalsIgnoreCase("SH")){
+			SludgeHauling sludgeHauling=frpPressQualityService.getSludgeHauling(id);
+			List<SludgeHauling> sludgeHaulings=new ArrayList<>();
+			if(sludgeHauling!=null){
+				sludgeHaulings.add(sludgeHauling);
+			}
+			
+			model.addAttribute("sludgeHaulings", sludgeHaulings);
+		}
+		
+		
+		
+		
+		model.addAttribute("backPram", backParam);
+		
+		return "frpPressQualityEdit";
+	}
+	
+	
+	@RequestMapping(value="/save",method=RequestMethod.POST)
+	public void save(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		Map<String, Object> map=new HashMap<String, Object>();
+		
+		try {
+			int id=CommonUtil.checkInt(request.getParameter("id"));
+			Date date=CommonUtil.checkDate(request.getParameter("date"),dateFormat1);
+			if(date==null){
+				throw new Exception("Invalid date.");
+			}
+			
+			String time=CommonUtil.checkNull(request.getParameter("time"));
+			if(time!=null && !time.equals("")){
+				Date t=CommonUtil.checkDate(time, timeFormat);
+				date=CommonUtil.getDateTime(date, t);
+			}
+			
+			
+			int lot=CommonUtil.checkInt(request.getParameter("lot"));
+			String initials=CommonUtil.checkNull(request.getParameter("initials"));
+//			Code Starts From Here Done By Roshan Tailor Date ;- 04/01/015
+			double bleachingchemical=CommonUtil.checkDouble(request.getParameter("bleachingchemical"));
+//			Code ends Here Done By Roshan Tailor
+			String grade=CommonUtil.checkNull(request.getParameter("grade"));
+
+			double  brightness=CommonUtil.checkDouble(request.getParameter("brightness"));
+//			Code Starts From Here Done By Roshan Tailor Date :- 03/30/2015
+			double  lvalue=CommonUtil.checkDouble(request.getParameter("lvalue"));
+			double  avalue=CommonUtil.checkDouble(request.getParameter("avalue"));
+			double  bvalue=CommonUtil.checkDouble(request.getParameter("bvalue"));
+//			Code Ends Here Doen By Roshan TAilor 
+			double  dirt=CommonUtil.checkDouble(request.getParameter("dirt"));
+			double  stickies=CommonUtil.checkDouble(request.getParameter("stickies"));
+			double  consistency=CommonUtil.checkDouble(request.getParameter("consistency"));
+			double  ash=CommonUtil.checkDouble(request.getParameter("ash"));
+
+			String cuRunning=CommonUtil.checkNull(request.getParameter("cuRunning"));
+			String comments=CommonUtil.checkNull(request.getParameter("comments"));
+			String qualityType=CommonUtil.checkNull(request.getParameter("qualityType"));
+			
+			double  freeness=CommonUtil.checkDouble(request.getParameter("freeness"));
+			
+//			Code Starts From Here Done By Roshan Tailor Date :- 03/24/2015   MM/DD/YYYY
+			double eric=CommonUtil.checkDouble(request.getParameter("eric"));
+			String astar=CommonUtil.checkNull(request.getParameter("astar"));
+			String bstar=CommonUtil.checkNull(request.getParameter("bstar"));
+			String comment=CommonUtil.checkNull(request.getParameter("comments"));
+//			Code Ends Here Done By Roshan Tailor
+			FrpPressQuality frpPressQuality=new FrpPressQuality();
+			frpPressQuality.setId(id);
+			frpPressQuality.setDate(date);
+			frpPressQuality.setLot(lot);
+			frpPressQuality.setInitials(initials);
+			frpPressQuality.setGrade(grade);
+			frpPressQuality.setBrightness(brightness);
+//			Code Starts From Here Done By Roshan Tailor Date :- 03/30/2015
+			frpPressQuality.setAvalue(avalue);
+			frpPressQuality.setLvalue(lvalue);
+			frpPressQuality.setBvalue(bvalue);
+//			Code Ends Here Done By Roshan Tailor
+			frpPressQuality.setDirt(dirt);
+			frpPressQuality.setStickies(stickies);
+			frpPressQuality.setConsistency(consistency);
+			frpPressQuality.setAsh(ash);
+			frpPressQuality.setCuRunning(cuRunning);
+			frpPressQuality.setComments(comments);
+			frpPressQuality.setQualityType(qualityType);
+			frpPressQuality.setFreeness(freeness);
+//			Code Starts From Here Done By Roshan Tailor Date :-03/4/2015
+			frpPressQuality.setEric(eric);
+			frpPressQuality.setAstar(astar);
+			frpPressQuality.setBstar(bstar);
+			frpPressQuality.setComments(comment);
+//			Code Ends Here Done By Roshan Tailor
+//			System.out.println("L Value"+lvalue);
+//			System.out.println("A Value"+avalue);
+//			System.out.println("B Value"+bvalue);
+			if(qualityType.equalsIgnoreCase("WL")){
+				if(frpPressQualityService.isLotExist(frpPressQuality)){
+					map.put("ERLOT", "OK");
+					throw new Exception("Lot number already exist.");
+				}
+			}
+			
+			try {
+				if(frpPressQuality.getId()==0){
+					//Insert
+					int key=frpPressQualityService.save(frpPressQuality);
+					map.put("status", true);
+					map.put("id", key);
+					map.put("message", "Data saved successfully.");
+					
+				}else{
+					frpPressQualityService.update(frpPressQuality);
+					map.put("status", true);
+					map.put("id", frpPressQuality.getId());
+					map.put("message", "Data updated successfully.");
+					//Update
+				}
+			} catch (Exception e) {
+				throw new Exception("Error in saving data", e);
+			}
+			
+		} catch (Exception e) {
+		//	e.printStackTrace();
+			map.put("status", false);
+			map.put("error", e.getMessage());
+		}
+		
+		response.setContentType("application/json");
+		response.getWriter().write(new Gson().toJson(map));
+	}
+	
+	@RequestMapping(value="/delete",method=RequestMethod.POST)
+	public void delete(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		int id=CommonUtil.checkInt(request.getParameter("id"));
+		
+		Map<String, Object> map=new HashMap<String, Object>();
+		
+		try {
+			frpPressQualityService.delete(id);
+			map.put("status", true);
+		} catch (Exception e) {
+			map.put("status", false);
+			map.put("error", "Server error...");
+			
+		}
+		
+		
+		response.setContentType("application/json");
+		response.getWriter().write(new Gson().toJson(map));
+		
+	}
+	
+	@RequestMapping(value="/savesludgehauling",method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> saveSlugHauling(HttpServletRequest request){
+		Map<String, Object> map=new HashMap<String, Object>();
+		
+		try {
+			SludgeHauling sludgeHauling=new SludgeHauling();
+			
+			sludgeHauling.setId(CommonUtil.checkInt(request.getParameter("id")));
+			sludgeHauling.setDate(CommonUtil.checkDate(request.getParameter("date"), dateFormat1));
+			sludgeHauling.setGrade(CommonUtil.checkNull(request.getParameter("grade")));
+			sludgeHauling.setSludgeHauled(CommonUtil.checkDouble(request.getParameter("sludgeHauled")));
+			sludgeHauling.setSludgeConsistency(CommonUtil.checkDouble(request.getParameter("sludgeConsistency")));
+			sludgeHauling.setRejectsBwHauled(CommonUtil.checkDouble(request.getParameter("rejectsBwHauled")));
+			sludgeHauling.setRejectsBwConsistency(CommonUtil.checkDouble(request.getParameter("rejectsBwConsistency")));
+			sludgeHauling.setFrpSludgePressRunning(CommonUtil.checkNull(request.getParameter("frpSludgePressRunning")));
+			sludgeHauling.setFrpScrewPressRunning(CommonUtil.checkNull(request.getParameter("frpScrewPressRunning")));
+			
+			int id=frpPressQualityService.saveOrUpdate(sludgeHauling);
+			map.put("status", true);
+			map.put("id", id);
+			
+			
+			if(sludgeHauling.getId()>0){
+				map.put("message", "Data updated successfully.");	
+			}else{
+				map.put("message", "Data saved successfully.");
+			}
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("status", false);
+			map.put("error", e.getMessage());
+		}
+		
+		return map;
+		
+	}
+	
+	@RequestMapping(value="/deletesludgehauling",method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> deleteSludgeHauling(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		int id=CommonUtil.checkInt(request.getParameter("id"));
+		
+		Map<String, Object> map=new HashMap<String, Object>();
+		
+		try {
+			frpPressQualityService.deleteSludgeHauling(id);
+			map.put("status", true);
+		} catch (Exception e) {
+			map.put("status", false);
+			map.put("error", "Server error...");
+			
+		}
+		return map;
+	
+		
+	}
+}

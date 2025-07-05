@@ -1,0 +1,76 @@
+/**
+ *Apr 22, 2015
+ *FrpYieldService.java
+ * TODO
+ *com.st.frpyield.service
+ *FrpYieldService.java
+ *Sunil Singh Bora
+ */
+package com.st.frpyield.service;
+import java.util.Date;
+import java.util.List;
+
+import com.st.frpyield.model.FrpYield;
+
+/**
+ * @author Roshan Tailor
+ * Code Done By Roshan Tailor Date :-04/21/2015 Night Shift
+ */
+public interface FrpYieldService {
+	
+
+	/**
+	 * @param frpYieldQuality
+	 * @return
+	 */
+	int save(FrpYield frpYieldQuality);
+
+	/**
+	 * @param frpYieldQuality
+	 */
+	void update(FrpYield frpYieldQuality);
+
+	/**
+	 * @param sdate 
+	 * @return
+	 */
+	List<FrpYield> getFrpYieldQualities(Date sdate);
+
+	/**
+	 * @param id
+	 */
+	void delete(int id);
+
+	/**
+	 * @param startdate
+	 * @param enddate
+	 * @return
+	 */
+	List<FrpYield> getFrpYieldData(Date startdate, Date enddate);
+
+	/**
+	 * @param sdate
+	 * @return
+	 */
+	List<FrpYield> getEditFrpYieldData(Date sdate);
+
+	/**
+	 * @param checkDate
+	 * @param checkDate2
+	 * @return
+	 */
+	List<FrpYield> getDailyReportData(Date checkDate, Date checkDate2);
+
+	/**
+	 * @param startdate
+	 * @param enddate
+	 * @return
+	 */
+	List<FrpYield> getFrpYieldSummaryData(Date startdate, Date enddate);
+
+	/**
+	 * @param startdate
+	 * @param enddate
+	 * @return
+	 */
+}

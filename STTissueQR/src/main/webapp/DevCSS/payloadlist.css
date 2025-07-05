@@ -1,0 +1,147 @@
+  body{
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(219, 238, 238);
+    
+}
+/* .container-fluid
+{
+    background-color: rgb(219, 238, 238);
+   overflow-x: auto; Enable horizontal scrolling
+    max-width: 100%; Ensure the container does not exceed screen width
+    
+     max-height: 100%;
+} */
+.navbar-custom {
+background-color: #2084c2; /* Set the background color */
+padding-top: 10px; /* Add padding to top of navbar */
+padding-bottom: 10px; /* Add padding to bottom of navbar */
+}
+.navbar-custom .btn {
+margin-right: 20px; /* Adjust spacing between navbar buttons */
+margin-left: 20px;
+}
+.navbar-custom .navbar-text {
+color: #ffffff; /* Set text color */
+margin-right: 40px; /* Adjust spacing between labels and data */
+font-size:20px;
+}
+.navbar-custom .ml-auto {
+margin-left: auto; /* Push logout button to the right */
+}
+.navbar-custom .navbar-brand img {
+margin-left: 10px;
+max-height: 40px; /* Set max height for the logo */
+/* Adjust spacing between logo and text */
+}
+
+ /* Custom background colors for odd and even rows */
+ 
+ 
+ .table tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #e6e6e6;
+            text-align: center;
+        }
+
+        /* Custom background color for table header */
+        .table thead th {
+            background-color: #2084c2; /* Dark background color */
+            color: white; /* Text color */
+            text-align: center;
+            
+        }
+         /* Button hover effect */
+         .btn-warning:hover {
+            background-color: #84b6b2; /* Change to desired hover color */
+            border-color: #2084c2; /* Change border color if needed */
+        }
+        
+        /*footer css  */
+            footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height:30px;
+            background-color: white; /* Dark background color */
+            color: black; /* Text color */
+            padding: 10px 0; /* Padding top and bottom */
+            text-align: center; /* Center align text */
+        }
+        /* Custom home button styles */
+        .btn-home {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white; /* Text color */
+            border: none; /* No border */
+            transition: background-color 0.3s ease; /* Transition for background color */
+        }
+        .btn-home:hover {
+            background-color: green; /* Darker shade of primary color on hover */
+        }
+        
+ /* Base styles for the container */
+.container-fluid {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hide overflow for the container */
+}
+
+/* Make the table container scrollable */
+.table-container {
+    flex: 1; /* Allow this element to expand to fill the available space */
+    overflow-x: auto; /* Horizontal scroll for table overflow */
+    overflow-y: auto; /* Vertical scroll for table overflow */
+}
+
+/* Ensure the table takes up the full width */
+.table {
+    min-width: 100%; /* Full width to enable horizontal scrolling if needed */
+    border-collapse: collapse; /* Collapses table borders for better appearance */
+}
+
+/* Style for the table header */
+thead {
+    position: sticky;
+    top: 0;
+    background-color: #2084c2;
+    z-index: 1; /* Ensure header stays on top of the table content */
+}
+/* Font size for viewport width of 1600px and above */
+@media (min-width: 1024px) {
+    .table {
+        font-size: 12px; /* Increase font size for 1600px screens */
+    }
+}
+
+/* Font size for viewport width of 2000px and above */
+@media (min-width: 1440px) {
+  .table {
+        font-size: 18px; /* Further increase font size for 2000px screens */
+    }
+    
+}
+
+/* Font size for viewport width of 3000px and above */
+@media (min-width: 2560px) {
+    .table { 
+        font-size: 22px; /* Further increase font size for 3000px screens */
+    }
+    
+}
+/* Font size for viewport width of 3000px and above */
+@media (min-width: 4560px) {
+   .table { 
+        font-size: 38px; /* Further increase font size for 3000px screens */
+    }
+     .footer { 
+        font-size: 38px; /* Further increase font size for 3000px screens */
+    }
+     .nav { 
+        font-size: 50px; /* Further increase font size for 3000px screens */
+    }
+}

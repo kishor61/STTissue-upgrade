@@ -1,0 +1,51 @@
+body {
+	font-family: sans-serif;
+	font-size: 12px;
+	padding: 2px;
+}
+
+.table {
+	border-collapse: collapse;
+}
+
+.table thead {
+	background-color: rgb(240, 220, 200);
+}
+
+.table tfoot {
+	background-color: rgb(240, 239, 238);
+}
+
+.table th,.table td {
+	border: 1px solid gray;
+}
+
+.table td {
+	font-size: 12px;
+	padding: 2px;
+}
+
+.redcolor{
+	background-color: red !important;
+	color: white !important;
+}
+.greencolor{
+	background-color: #7CFC00 !important;
+	color: black !important;
+}
+.yellowcolor{
+	background-color:yellow !important;
+	color: black !important;
+}
+.redBorder{
+	border-color: #FF4500;
+}
+.trobjrow{
+	background-color: #F5DA81;
+	color: #0040FF;
+	font-weight: bold;
+}
+.header-report{
+	font-size: 24px;
+	text-transform: uppercase;
+}

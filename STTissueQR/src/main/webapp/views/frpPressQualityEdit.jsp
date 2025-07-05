@@ -1,0 +1,882 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<title><spring:message code="app.name" /></title>
+<jsp:include page="common.jsp"></jsp:include>
+
+<style type="text/css">
+.table input,.table select {
+	width: inherit;
+	text-align: center;
+}
+.table td{
+	padding: 0 !important;
+}
+</style>
+
+
+<spring:url value="/frppressquality/new" var="newTypeURL" />
+<script type="text/javascript">
+var currentVal='';
+var saveLock;
+var clearTimer;
+
+	$(function(){
+		$('select[name=pType]').change(function(){
+			var val=$(this).val();
+			
+			if(val!=''){
+				location.href='${newTypeURL}/'+val;
+			}else{
+				location.href='${newTypeURL}';
+			}
+			
+		});
+		
+		$('input[name=date]').datepicker({
+			dateFormat : 'mm-dd-yy',
+			changeMonth : true,
+			changeYear : true,
+			maxDate : 0,
+			onClose:function(){
+				saveData($(this));
+				$(this).parent().next().children().focus();
+			}
+		});
+		
+		$('#qualityDataTable tbody input, #qualityDataTable tbody select').focusin(doFocusIn);
+		$('#qualityDataTable tbody input, #qualityDataTable tbody select').focusout(doFocusOut);
+	});
+	
+
+
+	function doFocusIn(){
+		currentVal=$(this).val();
+	}
+	function doFocusOut(){
+		if(validatePQ($(this))){
+			return;
+		}
+		
+		if($(this).val()==currentVal){
+			return;
+		}
+		
+		saveData($(this));
+	}
+	
+	function validatePQ(tb){
+		if($.trim(tb.val())!=''){
+			if( (tb.attr('name')=='initials') | 
+				(tb.attr('name')=='grade') |
+				(tb.attr('name')=='cuRunning')|
+				(tb.attr('name')=='frpSludgePressRunning') |
+				(tb.attr('name')=='frpScrewPressRunning') |
+				(tb.attr('name')=='comments') |
+// 				Code Starts From Here Done By Roshan Tailor Date :- 03/27/2015
+				(tb.attr('name')=='astar') |
+				(tb.attr('name')=='bstar') |
+				(tb.attr('name')=='comment') |
+// 				Code Ends Here Done By Roshan Tailor
+				(tb.attr('name')=='date')
+				){
+					//Do Nothing
+			}else if(tb.attr('name')=='time'){
+				var valid1 = (tb.val().search(/^\d{1}:\d{1}$/) != -1);
+				var valid2 = (tb.val().search(/^\d{1}:\d{2}$/) != -1);
+				var valid3 = (tb.val().search(/^\d{2}:\d{1}$/) != -1);
+				var valid4 = (tb.val().search(/^\d{2}:\d{2}$/) != -1);
+				if(!(valid1|valid2|valid3|valid4) ){
+					alert('Enter a valid time in 24 hours format.(For example 21:00');
+					setTimeout(function(){tb.focus();}, 10);
+					saveLock=true;
+					return true;
+				}
+			}else if(isNaN(tb.val())){
+				alert('Enter a valid number.');
+				setTimeout(function(){tb.focus();}, 10);
+				saveLock=true;
+				return true;
+			}
+		}
+		saveLock=false;
+		return false;
+	}
+</script>
+
+</head>
+<body>
+
+	<div class="container">
+
+		<div class="block1">
+			<jsp:include page="header.jsp"></jsp:include>
+		</div>
+
+
+		<div class="block3" style="overflow: auto;">
+			<div class="pageContent">
+
+				<div class="page-title">
+					<span class="label">FRP Press Quality Data-Edit</span>
+				</div>
+				<br>
+				<div class="table-selector">
+					
+					<table style="margin: auto;">
+						<tr>
+						
+							<td> &nbsp;&nbsp; Press Quality Type: </td>
+							<td>
+								<b>${qtypes[type]}</b>
+								<input type="hidden" name="pType" value="${type}">
+								<%-- <select name="pType" style="width: 200px;">
+									<option value="">Select</option>
+									<c:forEach items="${qtypes }" var="qtype">
+										<c:choose>
+											<c:when test="${qtype.key eq  type }">
+												<option value="${qtype.key}" selected="selected">${qtype.value}</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${qtype.key}">${qtype.value}</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</select> --%>
+							</td>
+							<td>
+								<c:if test="${not empty type}">
+									<spring:url value="/frppressqualityreport/view/load" var="backURL"/>
+									
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<button onclick="location.href='${backURL}?${backPram}'">Back To Report</button>
+								</c:if>
+							</td>	
+												
+						</tr>
+					</table>
+
+				</div>
+
+				<br>
+<c:if test="${not empty type}">
+
+<!-- Code Starts From Here Done By Roshan Tailor Add  TPQ2 ,SECPRESSQ Date :- 03/27/2015  MM/DD/YYYY-->
+<c:if test="${type eq 'SPC' || type eq 'TPQ' ||type eq 'TPQ2' || type eq 'SECPRESSQ'|| type eq 'WL' || type eq 'IPSC' }">
+<!-- Code Ends Here Done By Roshan Tailor -->
+
+<spring:url value="/frppressquality/save" var="saveURL" />
+<spring:url value="/frppressquality/delete" var="deleteURL" />
+
+
+<script type="text/javascript">
+
+
+function saveData(jq){
+	
+	$('#tmessage').text('');
+	clearTimeout(clearTimer);
+	
+	var tr=jq.parent().parent();
+	
+	var id=tr.find('input[name=id]').val();
+	var idEle=tr.find('input[name=id]');
+	var date=tr.find('input[name=date]').val();
+	var time=tr.find('input[name=time]').val();
+	
+	var lot=tr.find('input[name=lot]').val();
+	if(typeof lot==='undefined'){
+		lot=0;
+	}
+	var initials=tr.find('input[name=initials]').val();
+	if(typeof initials==='undefined'){
+		initials='';
+	}
+// 	Code Starts From Here Done BY Roshan TAilor Date :- 04/01/2015
+	var bleachingchemical=tr.find('input[name=bleachingchemical]').val();
+	if(typeof bleachingchemical==='undefined'){
+		bleachingchemical='';
+	}
+//  Code Ends Here ADone By Roshan Tailor
+	var grade=tr.find('select[name=grade]').val();
+	if(typeof grade==='undefined'){
+		grade='';
+	}
+	var brightness=tr.find('input[name=brightness]').val();
+	if(typeof brightness==='undefined'){
+		brightness=0;
+	}
+// 	Code Starts From Here Done By Roshan Tailor Date :- 03/30/2015
+	var lvalue=tr.find('input[name=lvalue]').val();
+	if(typeof lvalue==='undefined'){
+		lvalue=0;
+	}
+	var avalue=tr.find('input[name=avalue]').val();
+	if(typeof avalue==='undefined'){
+		avalue=0;
+	}
+	var bvalue=tr.find('input[name=bvalue]').val();
+	if(typeof bvalue==='undefined'){
+		bvalue=0;
+	}
+	
+// Code Ends Here Done By Roshan Tailor
+	var dirt=tr.find('input[name=dirt]').val();
+	if(typeof dirt==='undefined'){
+		dirt=0;
+	}
+	var stickies=tr.find('input[name=stickies]').val();
+	if(typeof stickies==='undefined'){
+		stickies=0;
+	}
+	var consistency=tr.find('input[name=consistency]').val();
+	if(typeof consistency==='undefined'){
+		consistency=0;
+	}
+	var ash=tr.find('input[name=ash]').val();
+	if(typeof ash==='undefined'){
+		ash=0;
+	}
+	var cuRunning=tr.find('select[name=cuRunning]').val();
+	if(typeof cuRunning==='undefined'){
+		cuRunning='';
+	}
+	var comments=tr.find('input[name=comments]').val();
+	var qualityType=$('input[name=pType]').val();
+	if(qualityType==''){
+		return;
+	}
+	//Code Starts From Here Done By Roshan Tailor Date :- 03/27/2015
+	var eric=tr.find('input[name=eric]').val();
+	if(typeof eric==='undefined'){
+		eric=0;
+	}
+	var astar=tr.find('select[name=astar]').val();
+	if(typeof astar==='undefined'){
+		astar=0;
+	}
+	var bstar=tr.find('select[name=bstar]').val();
+	if(typeof bstar==='undefined'){
+		bstar=0;
+	}
+	//Code Ends Here Done By Roshan Tailor
+	
+	if(saveLock){
+		return;
+	}
+	
+	saveLock=true;
+	$.ajax({
+		url:'${saveURL}',
+		type:'POST',
+		data:{
+			id : id,
+			date : date,
+			time : time,
+			lot : lot,
+			initials : initials,
+// 			Code Starts From Here Done By Roshan Tailor Date:- 04/01/2015
+			bleachingchemical : bleachingchemical,
+// 			Code ends Here Done By Roshan Tailor
+			grade : grade,
+			brightness : brightness,
+// 			Code Starts From Here Done By Roshan Tailor Date :- 03/30/2015
+			lvalue : lvalue,
+			avalue : avalue,
+			bvalue : bvalue,
+// 			Code Ends Here Done By Roshan Tailor
+			dirt : dirt,
+			stickies : stickies,
+			consistency : consistency,
+			ash : ash,
+			cuRunning : cuRunning,
+			comments : comments,
+// 			Code Starts From Here Done By Roshan Tailor Date :- 03/27/2015 MM/DD/YYYY
+			eric : eric,
+			astar : astar,
+			bstar : bstar,
+// 			Code Ends Here Done By Roshan Tailor 
+			qualityType : qualityType
+
+		},
+		success:function(data){
+			var lotEle=tr.find('input[name=lot]');
+			
+			if(data.status){
+				idEle.val(data.id);
+				$('#tmessage').text(data.message);
+				clearTimer=setTimeout(function(){$('#tmessage').text('');}, 5000);
+				
+				if(lotEle){
+					lotEle.removeClass('redBorder');
+				}
+				
+			}else{
+				
+				if(data.ERLOT){
+					setTimeout(function(){lotEle.focus();}, 100);
+					lotEle.addClass('redBorder');
+					alert(data.error);
+				}else{
+					alert(data.error);
+				}
+				
+			}
+			saveLock=false;
+		},
+		error: function(xhr, status, error) {
+			alert('Server error.. :-(' );
+			saveLock=false;
+		}
+	});
+	
+}
+	
+	
+</script>
+
+</c:if>
+
+
+
+<c:if test="${type eq 'SH'}">
+
+<spring:url value="/frppressquality/savesludgehauling" var="saveURL" />
+<spring:url value="/frppressquality/deletesludgehauling" var="deleteURL" />
+
+<script type="text/javascript">
+
+
+function saveData(jq){
+	
+	$('#tmessage').text('');
+	clearTimeout(clearTimer);
+	
+	var tr=jq.parent().parent();
+	
+	var id=tr.find('input[name=id]').val();
+	var idEle=tr.find('input[name=id]');
+	var date=tr.find('input[name=date]').val();
+	var grade=tr.find('select[name=grade]').val();
+	var sludgeHauled=tr.find('input[name=sludgeHauled]').val();
+	var sludgeConsistency=tr.find('input[name=sludgeConsistency]').val();
+	//Code Starts From Here Done By Roshan Tailor Date :- 03/21/2016
+	var effluentConsistency=tr.find('input[name=effluentConsistency]').val();
+	//Code Ends Here Done By Roshan Tailor Date :- 03/21/2016
+	var rejectsBwHauled=tr.find('input[name=rejectsBwHauled]').val();
+	var rejectsBwConsistency=tr.find('input[name=rejectsBwConsistency]').val();
+	var frpSludgePressRunning=tr.find('select[name=frpSludgePressRunning]').val();
+	var frpScrewPressRunning=tr.find('select[name=frpScrewPressRunning]').val();
+	
+	if(saveLock){
+		return;
+	}
+	
+	saveLock=true;
+	
+	$.ajax({
+		url:'${saveURL}',
+		type:'POST',
+		data:{
+			id : id,
+			date : date,
+			grade : grade,
+			sludgeHauled : sludgeHauled,
+			sludgeConsistency : sludgeConsistency,
+			rejectsBwHauled : rejectsBwHauled,
+			rejectsBwConsistency : rejectsBwConsistency,
+			frpSludgePressRunning : frpSludgePressRunning,
+			frpScrewPressRunning : frpScrewPressRunning,
+			//Code Starts From Here Done By Roshan Tailor Date :- 03/21/2016
+			effluentConsistency : effluentConsistency
+			//Code Ends Here Done By Roshan Tailor Date :- 03/21/2016
+		},
+		success:function(data){
+			
+			if(data.status){
+				idEle.val(data.id);
+				$('#tmessage').text(data.message);
+				clearTimer=setTimeout(function(){$('#tmessage').text('');}, 5000);
+				
+			}else{
+				
+				alert(data.error);
+				
+			}
+			saveLock=false;
+		},
+		error: function(xhr, status, error) {
+			alert('Server error.. :-(' );
+			saveLock=false;
+		}
+	});
+	
+}
+
+</script>
+
+</c:if>
+
+
+
+</c:if>
+
+<!-- TERTIARY PRESS QUALITY -->
+<c:if test="${type eq 'TPQ' }">
+<table id="qualityDataTable"  class="table" style="width: 800px; margin: auto;font-size: 12px;">
+	<thead>
+		<tr>
+			<th style="width: 20px;">&nbsp;</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Initials</th>
+			<th>Brightness<br> (2/shift) Min 71.5<br> for tube conveyor</th>
+<!-- 			Code Starts From Here Done By Roshan Tailor Date :- 03/30/2015 -->
+			<th>L</th>
+			<th>a</th>
+			<th>b</th>	
+<!-- 			Code Ends Here Done By Roshan Tailor -->
+			<th>Dirt <br> (2/shift)</th>
+			<th>Stickies<br> (1/night shift)</th>
+			<th>Ash </th>	
+			<th>Comments</th>	
+			
+		</tr>
+	</thead>
+	<tbody>
+
+	<c:if test="${fn:length(qualities)> 0 }">
+		<c:forEach items="${qualities}" var="quality">
+			<tr>
+				<td><input type="hidden" name="id" value="${quality.id}"></td>
+				<td style="width: 80px;">
+					<fmt:formatDate value="${quality.date}" pattern="MM-dd-yyyy" var="dateFrom"/>
+					<input readonly="readonly" type="text" name="date" value="${dateFrom}" autocomplete="off">
+				</td>
+				<td style="width: 60px;">
+					<fmt:formatDate value="${quality.date}" pattern="HH:mm" var="timeFrom"/>
+					<input type="text" name="time" value="${timeFrom}" autocomplete="off"> 
+				</td>
+				<td style="width: 75px;"><input type="text" name="initials" value="${quality.initials}" autocomplete="off"> </td>
+				<td style="width: 100px;"><input type="text" name="brightness" value="${quality.brightness}" autocomplete="off"> </td>
+<!-- 			Code Starts From Here Done By Roshan TAilor Date :- 03/30/2015 -->
+				<td style="width: 75px;"><input type="text" name="lvalue" value="${quality.lvalue}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="avalue" value="${quality.avalue}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="bvalue" value="${quality.bvalue}" autocomplete="off"> </td>
+<!-- 			Code Ends Here Done By Roshan Tailor -->
+				<td style="width: 75px;"><input type="text" name="dirt" value="${quality.dirt}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="stickies" value="${quality.stickies}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="ash" value="${quality.ash}" autocomplete="off"> </td>
+				<td style="width: 98%;"><input type="text" name="comments" value="${quality.comments}" autocomplete="off"> </td>
+			</tr>
+		</c:forEach>
+	</c:if>	
+	</tbody>
+</table>
+</c:if>
+
+<!-- Code Starts From Here Done By Roshan TAilor Date:- 03/27/2015 MM/DD/YYYY -->
+<!-- Teritiary Press Quality -->
+
+<c:if test="${type eq 'TPQ2' }">
+<table id="qualityDataTable"  class="table" style="width: 800px; margin: auto;font-size: 12px;">
+	<thead>
+		<tr>
+			<th style="width: 20px;">&nbsp;</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Initials</th>
+<!-- 		Code Starts From Here Done BY Roshan Tailor Date :- 04/01/2015 -->
+			<th>Bleaching Chemical</th>
+<!-- 		Code Ends Here Done BY Roshan Tailor	 -->
+			<th>Brightness<br> (2/shift) Min 71.5<br> for tube conveyor</th>
+			<!-- 			Code Starts From Here Done By Roshan Tailor Date :- 03/30/2015 -->
+			<th>L</th>
+			<th>a</th>
+			<th>b</th>	
+<!-- 			Code Ends Here Done By Roshan Tailor -->
+			<th>Dirt <br> (2/shift)</th>
+			<th>Stickies<br> (1/night shift)</th>
+			<th>Ash </th>	
+			<th>Comments</th>	
+			
+		</tr>
+	</thead>
+	<tbody>
+
+	<c:if test="${fn:length(qualities)> 0 }">
+		<c:forEach items="${qualities}" var="quality">
+			<tr>
+				<td><input type="hidden" name="id" value="${quality.id}"></td>
+				<td style="width: 80px;">
+					<fmt:formatDate value="${quality.date}" pattern="MM-dd-yyyy" var="dateFrom"/>
+					<input readonly="readonly" type="text" name="date" value="${dateFrom}" autocomplete="off">
+				</td>
+				<td style="width: 60px;">
+					<fmt:formatDate value="${quality.date}" pattern="HH:mm" var="timeFrom"/>
+					<input type="text" name="time" value="${timeFrom}" autocomplete="off"> 
+				</td>
+				<td style="width: 75px;"><input type="text" name="initials" value="${quality.initials}" autocomplete="off"> </td>
+<!-- 			Code Starts From Here Done BY Roshan Tailor	Date:- 04/01/2015	 -->
+				<td style="width: 75px;"><input type="text" name="bleachingchemical" value="${quality.bleachingchemical}" autocomplete="off"> </td>
+<!-- 			Code Ends Here Done By Roshan Tailor -->
+				<td style="width: 100px;"><input type="text" name="brightness" value="${quality.brightness}" autocomplete="off"> </td>
+<!-- 			Code Starts From Here Done By Roshan TAilor Date :- 03/30/2015 -->
+			<td style="width: 75px;"><input type="text" name="lvalue" value="${quality.lvalue}" autocomplete="off"> </td>
+			<td style="width: 75px;"><input type="text" name="avalue" value="${quality.avalue}" autocomplete="off"> </td>
+			<td style="width: 75px;"><input type="text" name="bvalue" value="${quality.bvalue}" autocomplete="off"> </td>
+<!-- 			Code Ends Here Done By Roshan Tailor -->	
+				<td style="width: 75px;"><input type="text" name="dirt" value="${quality.dirt}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="stickies" value="${quality.stickies}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="ash" value="${quality.ash}" autocomplete="off"> </td>
+				<td style="width: 98%;"><input type="text" name="comments" value="${quality.comments}" autocomplete="off"> </td>
+			</tr>
+		</c:forEach>
+	</c:if>	
+	</tbody>
+</table>
+</c:if>
+
+<!-- Code Ends Here Done By Roshan Tailor -->
+
+<!-- Code Starts From Here Done By Roshan Tailor Date Added SECPRESSQ :- 03/27/2015 MM/DD/YYYY -->
+<!-- Secondary Press Quality -->
+<c:if test="${type eq 'SECPRESSQ' }">
+<table id="qualityDataTable"  class="table" style="width: 800px; margin: auto;font-size: 12px;">
+	<thead>
+		<tr>
+			<th style="width: 20px;">&nbsp;</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Brightness</th>
+			<th>Eric</th>
+			<th>A*</th>
+			<th>B*</th>	
+			<th>Comments</th>	
+			
+		</tr>
+	</thead>
+	<tbody>
+
+	<c:if test="${fn:length(qualities)> 0 }">
+		<c:forEach items="${qualities}" var="quality">
+			<tr>
+				<td><input type="hidden" name="id" value="${quality.id}"></td>
+				<td style="width: 80px;">
+					<fmt:formatDate value="${quality.date}" pattern="MM-dd-yyyy" var="dateFrom"/>
+					<input readonly="readonly" type="text" name="date" value="${dateFrom}" autocomplete="off">
+				</td>
+				<td style="width: 60px;">
+					<fmt:formatDate value="${quality.date}" pattern="HH:mm" var="timeFrom"/>
+					<input type="text" name="time" value="${timeFrom}" autocomplete="off"> 
+				</td>
+				<td style="width: 75px;"><input type="text" name="brightness" value="${quality.brightness}" autocomplete="off"> </td>
+				<td style="width: 100px;"><input type="text" name="eric" value="${quality.eric}" autocomplete="off"> </td>
+				<td style="width: 75px;">
+					<select name="astar">
+					<option value="">Select</option>
+					<c:forEach items="${astar}" var="astar">
+							<c:choose>
+								<c:when test="${astar.key eq quality.astar}">
+									<option value="${astar.key}" selected="selected">${astar.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${astar.key}">${astar.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+				</select>
+				
+				 </td>
+				<td style="width: 75px;">
+					<select name="bstar">
+					<option value="">Select</option>
+					<c:forEach items="${bstar}" var="bstar">
+							<c:choose>
+								<c:when test="${bstar.key eq quality.bstar}">
+									<option value="${bstar.key}" selected="selected">${bstar.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${bstar.key}">${bstar.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+				</select>
+				
+				</td>
+				<td style="width: 98%;"><input type="text" name="comments" value="${quality.comments}" autocomplete="off"> </td>
+			</tr>
+		</c:forEach>
+	</c:if>	
+	</tbody>
+</table>
+</c:if>
+<!-- Code Ends Here Done By Roshan Tailor -->
+<!-- FRP Sludge Press Consistency -->
+<c:if test="${type eq 'SPC' }">
+<table  id="qualityDataTable" class="table" style="width: 800px; margin: auto;font-size: 12px;">
+	<thead>
+		<tr>
+			<th style="width: 20px;">&nbsp;</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Initials</th>
+			<th>Consistency<br> (1/shift)</th>
+			<th>Grade</th>
+			<th>Clarifier<br> Underflow<br>Running</th>
+			<th>Comments</th>	
+			
+		</tr>
+	</thead>
+	<tbody>
+
+	<c:if test="${fn:length(qualities)> 0 }">
+		<c:forEach items="${qualities}" var="quality">
+			<tr>
+				<td><input type="radio" name="id" value="${quality.id}"></td>
+				<td style="width: 80px;">
+					<fmt:formatDate value="${quality.date}" pattern="MM-dd-yyyy" var="dateFrom"/>
+					<input readonly="readonly" type="text" name="date" value="${dateFrom}" autocomplete="off">
+				</td>
+				<td style="width: 60px;">
+					<fmt:formatDate value="${quality.date}" pattern="HH:mm" var="timeFrom"/>
+					<input type="text" name="time" value="${timeFrom}" autocomplete="off"> 
+				</td>
+				<td style="width: 75px;"><input type="text" name="initials" value="${quality.initials}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="consistency" value="${quality.consistency}" autocomplete="off"> </td>
+				<td style="width: 100px;">
+					<select name="grade">
+						<option value="">Select</option>
+						<c:forEach items="${grades}" var="grade">
+							<c:choose>
+								<c:when test="${grade.key eq quality.grade}">
+									<option value="${grade.key}" selected="selected">${grade.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${grade.key}">${grade.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</td>
+				<td style="width: 100px;">
+					<select name="cuRunning">
+						<option value="">Select</option>
+						<c:forEach items="${ynflags}" var="ynflag">
+							<c:choose>
+								<c:when test="${ynflag.key eq quality.cuRunning}">
+									<option value="${ynflag.key}" selected="selected">${ynflag.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${ynflag.key}">${ynflag.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</td>
+				<td style="width: 98%;"><input type="text" name="comments" value="${quality.comments}" autocomplete="off"> </td>
+			</tr>
+		</c:forEach>
+	</c:if>
+	
+	</tbody>
+</table>
+</c:if>
+
+
+<!-- FRP Sludge Press Consistency -->
+<c:if test="${type eq 'IPSC' }">
+<table  id="qualityDataTable" class="table" style="width:400px; margin: auto;font-size: 12px;">
+	<thead>
+		<tr>
+			<th style="width: 20px;">&nbsp;</th>
+			<th>Date</th>
+			<th>Consistency</th>
+			<th>Comments</th>	
+			
+		</tr>
+	</thead>
+	<tbody>
+
+	<c:if test="${fn:length(qualities)> 0 }">
+		<c:forEach items="${qualities}" var="quality">
+			<tr>
+				<td><input type="radio" name="id" value="${quality.id}"></td>
+				<td style="width: 80px;">
+					<fmt:formatDate value="${quality.date}" pattern="MM-dd-yyyy" var="dateFrom"/>
+					<input readonly="readonly" type="text" name="date" value="${dateFrom}" autocomplete="off">
+				</td>
+				<td style="width: 75px;"><input type="text" name="consistency" value="${quality.consistency}" autocomplete="off"> </td>
+				<td style="width: 98%;"><input type="text" name="comments" value="${quality.comments}" autocomplete="off"> </td>
+			</tr>
+		</c:forEach>
+	</c:if>
+	
+	</tbody>
+</table>
+</c:if>
+<!-- WET LAP -->
+<c:if test="${type eq 'WL' }">
+<table id="qualityDataTable" class="table" style="width: 900px; margin: auto;font-size: 12px;">
+	<thead>
+		<tr>
+			<th style="width: 20px;">&nbsp;</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Lot</th>
+			<th>Brightness</th>
+			<th>Grade</th>
+			<th>Stickies</th>
+			<th>Dirt</th>
+			<th>Consistency</th>
+			<th>Ash</th>
+			<th>Comments</th>	
+			
+		</tr>
+	</thead>
+	<tbody>
+	
+	
+	<c:if test="${fn:length(qualities)> 0 }">
+		<c:forEach items="${qualities}" var="quality">
+		<tr>
+				<td><input type="hidden" name="id" value="${quality.id}"></td>
+				<td style="width: 80px;">
+					<fmt:formatDate value="${quality.date}" pattern="MM-dd-yyyy" var="dateFrom"/>
+					<input readonly="readonly" type="text" name="date" value="${dateFrom}" autocomplete="off">
+				</td>
+				<td style="width: 60px;">
+					<fmt:formatDate value="${quality.date}" pattern="HH:mm" var="timeFrom"/>
+					<input type="text" name="time" value="${timeFrom}" autocomplete="off"> 
+				</td>
+				<td style="width: 75px;"><input type="text" name="lot" value="${quality.lot}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="brightness" value="${quality.brightness}" autocomplete="off"> </td>
+				<td style="width: 100px;">
+					<select name="grade">
+						<option value="">Select</option>
+						<c:forEach items="${grades}" var="grade">
+							<c:choose>
+								<c:when test="${grade.key eq quality.grade}">
+									<option value="${grade.key}" selected="selected">${grade.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${grade.key}">${grade.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</td>
+				<td style="width: 75px;"><input type="text" name="stickies" value="${quality.stickies}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="dirt" value="${quality.dirt}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="consistency" value="${quality.consistency}" autocomplete="off"> </td>
+				<td style="width: 75px;"><input type="text" name="ash" value="${quality.ash}" autocomplete="off"> </td>
+				<td style="width: 98%;"><input type="text" name="comments" value="${quality.comments}" autocomplete="off"> </td>
+			</tr>
+		
+		</c:forEach>
+	</c:if>
+	
+	</tbody>
+</table>
+</c:if>
+
+<c:if test="${type eq 'SH' }">
+<table  id="qualityDataTable" class="table" style="width: 800px; margin: auto;font-size: 12px;">
+	<thead>
+		<tr>
+			<th style="width: 20px;">&nbsp;</th>
+			<th>Date</th>
+			<th>Grade</th>
+			<th>Sludge Hauled<br> (lbs)</th>
+			<th>Sludge<br> Consistency</th>
+<!-- 			Code Starts From Here Done By Roshan Tailor Date :- 03/21/2016 -->
+			<th>Effluent<br> Consistency</th>
+<!-- 			Code Ends Here Done By Roshan Tailor Date :- 03/21/2016 -->
+			<th>Rejects Bunker<br> Waste Hauled<br> (Lbs)</th>
+			<th>Rejects Bunker<br> Waste <br>Consistency</th>
+			<th>FRP Sludge<br> Press Running</th>
+			<th>FRP Screw<br> Press Running</th>	
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach items="${sludgeHaulings}" var="sludgeHauling">
+			<tr>
+				<td><input type="radio" name="id" value="${sludgeHauling.id}"></td>
+				
+				<td style="width: 80px;padding: 2px;">
+					<fmt:formatDate value="${sludgeHauling.date}" pattern="MM-dd-yyyy" var="dateFrom"/>
+					<input type="text" name="date" value="${dateFrom}">
+				</td>
+				<td style="width: 100px;">
+					<select name="grade">
+						<option value="">Select</option>
+						<c:forEach items="${grades}" var="grade">
+							<c:choose>
+								<c:when test="${grade.key eq sludgeHauling.grade}">
+									<option value="${grade.key}" selected="selected">${grade.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${grade.key}">${grade.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</td>
+				<td style="width: 100px;padding: 2px;"><input type="text" name="sludgeHauled" value="${sludgeHauling.sludgeHauled}" autocomplete="off"></td>
+				<td style="width: 100px;padding: 2px;"><input type="text" name="sludgeConsistency" value="${sludgeHauling.sludgeConsistency}" autocomplete="off"></td>
+<!-- 				Code Starts From Here Done By Roshan Tailor Date :- 03/21/2016 -->
+				<td style="width: 100px;padding: 2px;"><input type="text" name="effluentConsistency" value="${sludgeHauling.effluentConsistency}" autocomplete="off"></td>
+<!-- 				Code Ends Here Done By Roshan Tailor Date :- 03/21/2016 -->
+				<td style="width: 100px;padding: 2px;"><input type="text" name="rejectsBwHauled" value="${sludgeHauling.rejectsBwHauled}" autocomplete="off"></td>
+				<td style="width: 100px;padding: 2px;"><input type="text" name="rejectsBwConsistency" value="${sludgeHauling.rejectsBwConsistency}" autocomplete="off"></td>
+				<td style="width: 100px;">
+					<select name="frpSludgePressRunning">
+						<option value="">Select</option>
+						<c:forEach items="${ynflags}" var="ynflag">
+							<c:choose>
+								<c:when test="${ynflag.key eq sludgeHauling.frpSludgePressRunning}">
+									<option value="${ynflag.key}" selected="selected">${ynflag.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${ynflag.key}">${ynflag.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</td>
+				<td style="width: 100px;">
+					<select name="frpScrewPressRunning">
+						<option value="">Select</option>
+						<c:forEach items="${ynflags}" var="ynflag">
+							<c:choose>
+								<c:when test="${ynflag.key eq sludgeHauling.frpScrewPressRunning}">
+									<option value="${ynflag.key}" selected="selected">${ynflag.value}</option>
+								</c:when>
+								<c:otherwise>
+									<option value="${ynflag.key}">${ynflag.value}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+		</c:forEach>
+		
+    </tbody>
+</table>
+</c:if>
+
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title><spring:message code="app.name" /></title>
+<jsp:include page="common.jsp"></jsp:include>
+<spring:url value="/frpdailyyieldsummary/viewsummary" var="viewsummarydataURL" />
+<spring:url value="/frpdailyyieldsummary/summaryreport/export" var="yieldsummaryexportURL"/>	
+<script type="text/javascript">
+	$(function(){
+		$('input[name=startdate],input[name=enddate]').datepicker({
+			dateFormat:'mm-dd-yy',
+			changeMonth: true,
+		    changeYear: true
+		});
+	});
+</script>
+</head>
+<body>
+
+	<div class="container">
+
+		<div class="block1">
+			<jsp:include page="header.jsp"></jsp:include>
+		</div>
+
+
+		<div class="block3" style="overflow: auto;">
+			<div class="pageContent">
+
+				<div class="page-title">
+					<span class="label">FRP Daily Yield Summary</span>
+				</div>
+				<div class="table-selector">
+					
+					<table>
+						<tr>
+						<form action="${viewsummarydataURL}" method="get">
+							<td>Start Date:</td>
+							<td><input type="text" name="startdate" value="${startdate}"></td>
+							<td>End Date:</td>
+							<td><input type="text" name="enddate" value="${enddate}"></td>
+							<td><input type="submit" value="Search" name="submit"/></td>
+						</form>	
+						<c:if test="${resultpage}">
+<!-- 							<td><input type="button" name="printbutton" value="Print"></td> -->
+							<form action="${yieldsummaryexportURL}" method="POST">
+								<td><input type="hidden" name="startdate" value="${startdate}"></td>
+								<td><input type="hidden" name="enddate" value="${enddate}"></td>
+								<td><input type="submit" name="exportbutton" value="Export"></td>
+							</form>
+						</c:if>
+						</tr>
+					</table>
+
+				</div>
+<c:if test="${resultpage}">
+<div style="padding: 2px; overflow: auto; position: fixed;bottom: 0;left: 5px;right: 5px;top: 150px;">
+<table class="table" id="yielddatatable">
+						<thead style="font-size: 12px;">
+						
+						<tr>
+							<th style="width:10px;" rowspan="2">
+									<!-- <input type="checkbox" name="rowCheckboxAll"> -->
+							</th>
+							<th style="width:80px;" rowspan="2">Date</th>
+							<th style="width:80px;" rowspan="2">DCS Waste<br>Paper Fed</th>
+							<th style="width:80px;" rowspan="2">DCS FRP<br>Production</th>
+							<th style="width:80px;" rowspan="2">DCS FRP Yield</th>
+							<th colspan="18" style="background-color: greenyellow;">Yield loss Stage Wise</th>
+							<th colspan="2" style="background-color: greenyellow;">Ash In </th>
+							<th colspan="2" style="background-color: greenyellow;">Ash out </th>
+						</tr>
+						<tr>
+								<th style="width:80px;" colspan="2">Detrasher<br>Reects</th>
+								<th style="width:80px;" colspan="2" >HD Cleaners</th>
+								<th style="width:80px;"  colspan="2">Tertiary Coarse</th>
+								<th style="width:80px;" colspan="2">Tertiary Fine</th>
+								<th style="width:80px;" colspan="2">Forward Cleaner</th>
+								<th style="width:80px;" colspan="2">Prim Flot Cell </th>
+								<th style="width:80px;" colspan="2">Sec. Flot Cell </th>
+								<th style="width:80px;" colspan="2">First Stage<br>Deckers to<br>clarifier</th>
+								<th style="width:80px;" colspan="2">Unaccounted</th>
+								<th style="width:80px;">Pulper</th>
+								<th style="width:80px;">DWW</th>
+								<th style="width:80px;">Tertiary<br>Press</th>
+								<th style="width:80px;">Rejects</th>
+							</tr>
+							<tr>
+								<th class="trobjrow"></th>
+								<th class="trobjrow" style="width: 80px;"></th>
+								<th class="trobjrow">ADTPD</th>
+								<th class="trobjrow">ADTPD</th>
+								<th class="trobjrow">%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+								<th class="trobjrow" >BDTPD</th>
+								<th class="trobjrow" >%</th>
+							
+								<th class="trobjrow" >TPD</th>
+								<th class="trobjrow" >TPD</th>
+								<th class="trobjrow" >TPD</th>
+								<th class="trobjrow" >TPD</th>
+							</tr>
+						</thead>
+						<tbody id="yielddatainput">
+						<c:if test="${fn:length(frpsummary) > 0 }">
+							<c:forEach items="${frpsummary}" var="frpsummary">
+							<tr>
+								
+								<td></td>
+<%-- 								<td>${frpsummary['2']}</td> --%>
+<%-- 								<td>${DCSWastePaperFed }</td> --%>
+<%-- 								<td>${DCSFRPProduction}</td> --%>
+<%-- 								<td>${DCSFRPYieldPercentage}</td> --%>
+<%-- 								<td>${frpsummary['4']}</td> --%>
+								<td><fmt:formatDate value="${frpsummary.date}" pattern="MM/dd/yyyy"/></td>
+<%-- 								<td>${frpsummary.dcsfrpyieldpercentage}</td> --%>
+								<td><fmt:formatNumber value="${frpsummary.ylswdcswastepaperfed }" maxFractionDigits="2"/> </td>
+								<td>${frpsummary.ylswdcsfrpproduction }</td>
+								<td><fmt:formatNumber value="${frpsummary.dcsfrpyield}" maxFractionDigits="2"/></td>
+								<td>${frpsummary.rfdetrasherrejcts}</td>
+								<td><fmt:formatNumber value="${frpsummary.yielddetrasherreectsper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswhdcleaners}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.yieldhdcleanersper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswtertiarycoarse}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswtertiarycoarseper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswtertiaryfine}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswtertiaryfineper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswforwardcleaner}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswforwardcleanerper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswprimflotcell}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswprimflotcellper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswrfseccell}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswrfseccellper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswrffsdclarifier}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswrffsdclarifierper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswunaccounted}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswunaccountedper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswashinpulper}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswashindww}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswashouttertiarypress}" maxFractionDigits="2"/></td>
+								<td><fmt:formatNumber value="${frpsummary.ylswashoutrejects}" maxFractionDigits="2"/></td>
+							</tr>
+							</c:forEach>
+							</c:if>
+								</tbody>
+								
+								
+							
+						
+					</table>
+
+</div>
+	</c:if>
+
+	
+
+</body>
+</html>

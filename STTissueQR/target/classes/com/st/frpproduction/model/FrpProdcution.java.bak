@@ -1,0 +1,346 @@
+/**
+ * 
+ */
+package com.st.frpproduction.model;
+
+import java.util.Date;
+
+/**
+ * @author sbora
+ *
+ */
+public class FrpProdcution {
+	private int id;
+	private Date date;
+	private double hdStorage;
+	private double dcsWPFeedADST;
+	private double primaryPressADST;
+	private double wetLapProdADST;
+	private double totalProdADST;
+	private double trackerWPfeed;
+	private double yieldDcs;
+	private double yieldTracker;
+	private double freshWater;
+	private double mrMwlAndSwl;
+	private double mrSowAndCbs;
+	private double mrDlk;
+	private double mrOcc;
+	private double mrWhiteGrades;
+	private double mrGroundwood;
+	private double mrOther;
+	private double wpmMwl;
+	private double wpmPrintMix;
+	private double wpmSow;
+	private double wpmCbs;
+	private double wpmSowAndCbs;
+	private double wpmCtdGrwd;
+	private double wpmSwl;
+	private double wpmOcc;
+	private double wpmNewsNewsblank;
+	private double wpmDlk;
+	private double wpmOther;
+	private double wpmTotal;
+	private String targetBrightness;
+	private double dailyAvg;
+	private String pmTargetBrite;
+	private String pmAvgBrite;
+	private String comments;
+	private String prodType;
+	private String grade;
+	
+	//New fields
+	private double wpMailUndeliverable;
+	
+	private double freshWater2;
+	
+//	Code Starts From Here Done By Roshan Tailor Date :- 03/17/2015
+	private String clarifierunderflowpumpruningYN;
+	private double sludgepressconsistency;
+	private double screwpressconsistency;
+	private double mixratiobrightness;
+	private double eric;
+	private String astar;
+	private String bstar;
+//	Code Ends Here Done By Roshan Tailor
+	
+	//Temp
+	private double dcsWPFeedADSTTotal;
+	private double totalProdADSTTotal;
+	private double trackerWPfeedTotal;
+	
+	
+	public double getDcsWPFeedADSTTotal() {
+		return dcsWPFeedADSTTotal;
+	}
+	public void setDcsWPFeedADSTTotal(double dcsWPFeedADSTTotal) {
+		this.dcsWPFeedADSTTotal = dcsWPFeedADSTTotal;
+	}
+	public double getTotalProdADSTTotal() {
+		return totalProdADSTTotal;
+	}
+	public void setTotalProdADSTTotal(double totalProdADSTTotal) {
+		this.totalProdADSTTotal = totalProdADSTTotal;
+	}
+	public double getTrackerWPfeedTotal() {
+		return trackerWPfeedTotal;
+	}
+	public void setTrackerWPfeedTotal(double trackerWPfeedTotal) {
+		this.trackerWPfeedTotal = trackerWPfeedTotal;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public double getHdStorage() {
+		return hdStorage;
+	}
+	public void setHdStorage(double hdStorage) {
+		this.hdStorage = hdStorage;
+	}
+	public double getDcsWPFeedADST() {
+		return dcsWPFeedADST;
+	}
+	public void setDcsWPFeedADST(double dcsWPFeedADST) {
+		this.dcsWPFeedADST = dcsWPFeedADST;
+	}
+	public double getPrimaryPressADST() {
+		return primaryPressADST;
+	}
+	public void setPrimaryPressADST(double primaryPressADST) {
+		this.primaryPressADST = primaryPressADST;
+	}
+	public double getWetLapProdADST() {
+		return wetLapProdADST;
+	}
+	public void setWetLapProdADST(double wetLapProdADST) {
+		this.wetLapProdADST = wetLapProdADST;
+	}
+	public double getTotalProdADST() {
+		return totalProdADST;
+	}
+	public void setTotalProdADST(double totalProdADST) {
+		this.totalProdADST = totalProdADST;
+	}
+	public double getTrackerWPfeed() {
+		return trackerWPfeed;
+	}
+	public void setTrackerWPfeed(double trackerWPfeed) {
+		this.trackerWPfeed = trackerWPfeed;
+	}
+
+	
+	public double getYieldDcs() {
+		return yieldDcs;
+	}
+	public void setYieldDcs(double yieldDcs) {
+		this.yieldDcs = yieldDcs;
+	}
+	public double getYieldTracker() {
+		return yieldTracker;
+	}
+	public void setYieldTracker(double yieldTracker) {
+		this.yieldTracker = yieldTracker;
+	}
+	public double getFreshWater() {
+		return freshWater;
+	}
+	public void setFreshWater(double freshWater) {
+		this.freshWater = freshWater;
+	}
+	public double getMrMwlAndSwl() {
+		return mrMwlAndSwl;
+	}
+	public void setMrMwlAndSwl(double mrMwlAndSwl) {
+		this.mrMwlAndSwl = mrMwlAndSwl;
+	}
+	public double getMrSowAndCbs() {
+		return mrSowAndCbs;
+	}
+	public void setMrSowAndCbs(double mrSowAndCbs) {
+		this.mrSowAndCbs = mrSowAndCbs;
+	}
+	public double getMrDlk() {
+		return mrDlk;
+	}
+	public void setMrDlk(double mrDlk) {
+		this.mrDlk = mrDlk;
+	}
+	public double getMrOcc() {
+		return mrOcc;
+	}
+	public void setMrOcc(double mrOcc) {
+		this.mrOcc = mrOcc;
+	}
+	public double getMrWhiteGrades() {
+		return mrWhiteGrades;
+	}
+	public void setMrWhiteGrades(double mrWhiteGrades) {
+		this.mrWhiteGrades = mrWhiteGrades;
+	}
+	public double getMrGroundwood() {
+		return mrGroundwood;
+	}
+	public void setMrGroundwood(double mrGroundwood) {
+		this.mrGroundwood = mrGroundwood;
+	}
+	public double getMrOther() {
+		return mrOther;
+	}
+	public void setMrOther(double mrOther) {
+		this.mrOther = mrOther;
+	}
+	
+	public double getWpmMwl() {
+		return wpmMwl;
+	}
+	public void setWpmMwl(double wpmMwl) {
+		this.wpmMwl = wpmMwl;
+	}
+	public double getWpmPrintMix() {
+		return wpmPrintMix;
+	}
+	public void setWpmPrintMix(double wpmPrintMix) {
+		this.wpmPrintMix = wpmPrintMix;
+	}
+	public double getWpmSow() {
+		return wpmSow;
+	}
+	public void setWpmSow(double wpmSow) {
+		this.wpmSow = wpmSow;
+	}
+	public double getWpmCbs() {
+		return wpmCbs;
+	}
+	public void setWpmCbs(double wpmCbs) {
+		this.wpmCbs = wpmCbs;
+	}
+	public double getWpmSowAndCbs() {
+		return wpmSowAndCbs;
+	}
+	public void setWpmSowAndCbs(double wpmSowAndCbs) {
+		this.wpmSowAndCbs = wpmSowAndCbs;
+	}
+	public double getWpmCtdGrwd() {
+		return wpmCtdGrwd;
+	}
+	public void setWpmCtdGrwd(double wpmCtdGrwd) {
+		this.wpmCtdGrwd = wpmCtdGrwd;
+	}
+	public double getWpmSwl() {
+		return wpmSwl;
+	}
+	public void setWpmSwl(double wpmSwl) {
+		this.wpmSwl = wpmSwl;
+	}
+	public double getWpmOcc() {
+		return wpmOcc;
+	}
+	public void setWpmOcc(double wpmOcc) {
+		this.wpmOcc = wpmOcc;
+	}
+	public double getWpmNewsNewsblank() {
+		return wpmNewsNewsblank;
+	}
+	public void setWpmNewsNewsblank(double wpmNewsNewsblank) {
+		this.wpmNewsNewsblank = wpmNewsNewsblank;
+	}
+	public double getWpmDlk() {
+		return wpmDlk;
+	}
+	public void setWpmDlk(double wpmDlk) {
+		this.wpmDlk = wpmDlk;
+	}
+	public double getWpmOther() {
+		return wpmOther;
+	}
+	public void setWpmOther(double wpmOther) {
+		this.wpmOther = wpmOther;
+	}
+	public String getTargetBrightness() {
+		return targetBrightness;
+	}
+	public void setTargetBrightness(String targetBrightness) {
+		this.targetBrightness = targetBrightness;
+	}
+	public double getDailyAvg() {
+		return dailyAvg;
+	}
+	public void setDailyAvg(double dailyAvg) {
+		this.dailyAvg = dailyAvg;
+	}
+	public String getPmTargetBrite() {
+		return pmTargetBrite;
+	}
+	public void setPmTargetBrite(String pmTargetBrite) {
+		this.pmTargetBrite = pmTargetBrite;
+	}
+	public String getPmAvgBrite() {
+		return pmAvgBrite;
+	}
+	public void setPmAvgBrite(String pmAvgBrite) {
+		this.pmAvgBrite = pmAvgBrite;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	/**
+	 * @return the prodType
+	 */
+	public String getProdType() {
+		return prodType;
+	}
+	/**
+	 * @param prodType the prodType to set
+	 */
+	public void setProdType(String prodType) {
+		this.prodType = prodType;
+	}
+	/**
+	 * @return the wpmTotal
+	 */
+	public double getWpmTotal() {
+		return wpmTotal;
+	}
+	/**
+	 * @param wpmTotal the wpmTotal to set
+	 */
+	public void setWpmTotal(double wpmTotal) {
+		this.wpmTotal = wpmTotal;
+	}
+	public double getWpMailUndeliverable() {
+		return wpMailUndeliverable;
+	}
+	public void setWpMailUndeliverable(double wpMailUndeliverable) {
+		this.wpMailUndeliverable = wpMailUndeliverable;
+	}
+	/**
+	 * @return the grade
+	 */
+	public String getGrade() {
+		return grade;
+	}
+	/**
+	 * @param grade the grade to set
+	 */
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	public double getFreshWater2() {
+		return freshWater2;
+	}
+	public void setFreshWater2(double freshWater2) {
+		this.freshWater2 = freshWater2;
+	}
+
+}

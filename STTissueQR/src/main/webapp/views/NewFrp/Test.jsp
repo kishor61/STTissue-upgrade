@@ -1,0 +1,14 @@
+if(data.getOproute_9b_linebasement1_6am()!=null&&!data.getOproute_9b_linebasement1_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement2_6am()!=null&&!data.getOproute_9b_linebasement2_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement3_6am()!=null&&!data.getOproute_9b_linebasement3_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement4_6am()!=null&&!data.getOproute_9b_linebasement4_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement5_6am()!=null&&!data.getOproute_9b_linebasement5_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement6_6am()!=null&&!data.getOproute_9b_linebasement6_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement7_6am()!=null&&!data.getOproute_9b_linebasement7_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement8_6am()!=null&&!data.getOproute_9b_linebasement8_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement9_6am()!=null&&!data.getOproute_9b_linebasement9_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement10_6am()!=null&&!data.getOproute_9b_linebasement10_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement11_6am()!=null&&!data.getOproute_9b_linebasement11_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement12_6am()!=null&&!data.getOproute_9b_linebasement12_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement13_6am()!=null&&!data.getOproute_9b_linebasement13_6am().equals("")){_6am++;}
+if(data.getOproute_9b_linebasement14_6am()!=null&&!data.getOproute_9b_linebasement14_6am().equals("")){_6am++;}

@@ -1,0 +1,72 @@
+/**
+ *Apr 22, 2015
+ *FrpYieldQualityDao.java
+ * TODO
+ *com.st.frpyield.dao
+ *FrpYieldQualityDao.java
+ *Sunil Singh Bora
+ */
+package com.st.frpyield.dao;
+import java.util.Date;
+import java.util.List;
+
+import com.st.frpyield.model.FrpYield;
+
+/**
+ * @author roshan
+ *
+ */
+public interface FrpYieldDao {
+
+	
+	int save(FrpYield frpYieldQuality);
+
+	
+	void update(FrpYield frpYieldQuality);
+
+
+/**
+	 * @param sdate 
+	 * @return
+	 */
+	List<FrpYield> getFrpYieldQualities(Date sdate);
+
+
+	/**
+	 * @param id
+	 */
+	void delete(int id);
+
+
+	/**
+	 * @param enddate 
+	 * @param startdate 
+	 * @return
+	 */
+	List<FrpYield> getFrpYielData(Date startdate, Date enddate);
+
+
+	/**
+	 * @param date
+	 * @return
+	 */
+	List<FrpYield> getEditFrpYieldData(Date date);
+
+
+	/**
+	 * @param checkDate
+	 * @param checkDate2
+	 * @return
+	 */
+	List<FrpYield> getDailyReportData(Date checkDate, Date checkDate2);
+
+
+	/**
+	 * @param startdate
+	 * @param enddate
+	 * @return
+	 */
+	List<FrpYield> getFrpYieldSummaryData(Date startdate, Date enddate);
+
+	
+}

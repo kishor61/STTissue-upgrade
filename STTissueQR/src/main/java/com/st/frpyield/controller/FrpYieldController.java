@@ -1,0 +1,209 @@
+/**
+ *Apr 20, 2015
+ *FrpYieldController.java
+ * TODO
+ *com.st.frpyield.controller
+ *FrpYieldController.java
+ *Sunil Singh Bora
+ */
+package com.st.frpyield.controller;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
+import com.st.common.CommonUtil;
+import com.st.frpyield.model.FrpYield;
+import com.st.frpyield.service.FrpYieldService;
+
+/**
+ * @author Roshan Tailor
+ * Code Done By Roshan Tailor Date :- 04/21/2015 Night Shift
+ */
+@Controller
+@RequestMapping(value="/frpyield")
+public class FrpYieldController {
+	
+	private static final Logger logger=LoggerFactory.getLogger(FrpYieldController.class);
+	
+	private static final String EDIT_PAGE="editpage";
+	private static final String VIEW_PAGE="viewpage";
+	
+	@Autowired
+	private FrpYieldService frpYieldService; // Here We Have To Make Interface ,But Still showing Error So Implement This .Later does The Changes..
+	
+	private SimpleDateFormat dateFormat1=new SimpleDateFormat("MM-dd-yyyy");
+	@RequestMapping(value="/new",method=RequestMethod.GET)
+	public String main(HttpServletRequest request,HttpServletResponse response,Model model)
+	{
+		
+		Date date = new Date();
+		
+		Date sdate=CommonUtil.checkDate(dateFormat1.format(new Date()), dateFormat1);
+		//System.out.println(sdate);
+		List<FrpYield> qualities=frpYieldService.getFrpYieldQualities(sdate);
+		
+	  //  System.out.println("Calling New Method..");
+	    System.out.println(dateFormat1.format(date));
+	   	
+	    model.addAttribute("qualities", qualities);
+		model.addAttribute("currentdate", dateFormat1.format(date));
+	    return "frpYieldNew";
+	}
+	//Code Starts From Here Done By Roshan Tailor Date :- 04/21/2015 Night Shift
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	public @ResponseBody Map<String , Object> save(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		Map<String , Object> map=new HashMap<String,Object>();
+		try{
+			//System.out.println("Hii");
+			int id=CommonUtil.checkInt(request.getParameter("id"));
+		//	System.out.println("Current Id Is::"+id);
+			Date date=CommonUtil.checkDate(request.getParameter("date"),dateFormat1);
+			double sampleno=CommonUtil.checkDouble(request.getParameter("sampleno"));
+			double rfdetrasherrejcts=CommonUtil.checkDouble(request.getParameter("rfdetrasherrejcts"));
+			double rfhdcleaner=CommonUtil.checkDouble(request.getParameter("rfhdcleaner"));
+			double rftertiarycoarse=CommonUtil.checkDouble(request.getParameter("rftertiarycoarse"));
+			double rftertiaryfine=CommonUtil.checkDouble(request.getParameter("rftertiaryfine"));
+			double rffrwdcleaner=CommonUtil.checkDouble(request.getParameter("rffrwdcleaner"));
+			double rfprimcell=CommonUtil.checkDouble(request.getParameter("rfprimcell"));
+			double rfseccell=CommonUtil.checkDouble(request.getParameter("rfseccell"));
+			double rffsdclarifier=CommonUtil.checkDouble(request.getParameter("rffsdclarifier"));
+			double cyofdww=CommonUtil.checkDouble(request.getParameter("cyofdww"));
+			double rchdcleaner=CommonUtil.checkDouble(request.getParameter("rchdcleaner"));
+			double rctertiarycoarse=CommonUtil.checkDouble(request.getParameter("rctertiarycoarse"));
+			double rctertiaryfine=CommonUtil.checkDouble(request.getParameter("rctertiaryfine"));
+			double rcfrwdcleaner=CommonUtil.checkDouble(request.getParameter("rcfrwdcleaner"));
+			double rcprimcell=CommonUtil.checkDouble(request.getParameter("rcprimcell"));
+			double rcseccell=CommonUtil.checkDouble(request.getParameter("rcseccell"));
+			double rcfsdclarifier=CommonUtil.checkDouble(request.getParameter("rcfsdclarifier"));
+			double ashdww=CommonUtil.checkDouble(request.getParameter("ashdww"));
+			double ashpupler=CommonUtil.checkDouble(request.getParameter("ashpupler"));
+			double ashtertiarypress=CommonUtil.checkDouble(request.getParameter("ashtertiarypress"));
+			
+			FrpYield frpYield=new FrpYield();
+			
+			frpYield.setId(id);
+			frpYield.setDate(date);
+			frpYield.setSampleno(sampleno);
+			frpYield.setRfdetrasherrejcts(rfdetrasherrejcts);
+			frpYield.setRfhdcleaner(rfhdcleaner);
+			frpYield.setRftertiarycoarse(rftertiarycoarse);
+			frpYield.setRftertiaryfine(rftertiaryfine);
+			frpYield.setRffrwdcleaner(rffrwdcleaner);
+			frpYield.setRfprimcell(rfprimcell);
+			frpYield.setRfseccell(rfseccell);
+			frpYield.setRffsdclarifier(rffsdclarifier);
+			frpYield.setCyofdww(cyofdww);
+			frpYield.setRchdcleaner(rchdcleaner);
+			frpYield.setRctertiarycoarse(rctertiarycoarse);
+			frpYield.setRctertiaryfine(rctertiaryfine);
+			frpYield.setRcfrwdcleaner(rcfrwdcleaner);
+			frpYield.setRcprimcell(rcprimcell);
+			frpYield.setRcseccell(rcseccell);
+			frpYield.setRcfsdclarifier(rcfsdclarifier);
+			frpYield.setAshdww(ashdww);
+			frpYield.setAshpupler(ashpupler);
+			frpYield.setAshtertiarypress(ashtertiarypress);
+			
+			try{
+				if(frpYield.getId()==0){
+					//Insert Into DataBase.
+					//System.out.println("Step First..We Are In FrpYieldController.java");
+					int key=frpYieldService.save(frpYield); 
+				//	System.out.println("Key"+key);
+					//System.out.println("Inserted Successfully...");
+					map.put("status", true);
+					map.put("id", key);
+					map.put("message", "Data Saved Successfully");
+					
+				}else{
+					//Update DataBase.
+					frpYieldService.update(frpYield);
+					//System.out.println("Updateing Table....");
+					map.put("status", true);
+					map.put("id", frpYield.getId());
+					map.put("message", "Data Updated Successfully");
+				}
+			}
+			catch(Exception e){
+				logger.error("Roshan Says, You HAve A Problem To Save Data At FrpYieldController.java",e);
+				e.printStackTrace();
+			}
+			
+			
+		}catch(Exception e){
+			logger.error("Roshan Says ,You Have A Problem In /save method Of FrpYieldController.java",e);
+			e.printStackTrace();
+		}
+		return map;
+	}
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		
+		int id =CommonUtil.checkInt(request.getParameter("id"));
+		Map<String, Object> map= new HashMap<String, Object>();
+		try{
+			frpYieldService.delete(id);
+			map.put("status", true);
+		}catch(Exception e){
+			logger.error("Roshan Says That You Have A Problem In FrpYieldController.java At Delete Method",e);
+			e.printStackTrace();
+		}
+	response.setContentType("application/json");
+	response.getWriter().write(new Gson().toJson(map));
+	}	
+	
+	@RequestMapping(value="/edit/{date}/{edate}",method=RequestMethod.GET)
+	public String edit(
+			@PathVariable("date")String date,
+			@PathVariable("edate")String edate,
+			Model model)
+					throws ParseException{
+		
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+		Date sdate = dateFormat.parse(date);
+		List<FrpYield> EditFrpYield=frpYieldService.getEditFrpYieldData(sdate);
+		
+		model.addAttribute("startdate", dateFormat.format(new Date()));
+		model.addAttribute("enddate", dateFormat.format(new Date()));
+		model.addAttribute("startingdate", date);
+		model.addAttribute("endingdate", edate);
+		model.addAttribute(EDIT_PAGE, true);
+		model.addAttribute(VIEW_PAGE, false);
+		model.addAttribute("EditFrpYield",EditFrpYield);
+		//return "frpYieldDailyReportView";
+		return "frpYieldEditNew";
+		
+	}
+	
+	@RequestMapping(value="/addrow",method=RequestMethod.POST)
+	public @ResponseBody Map <String , Object> addrow(Model model){
+		Map<String , Object> map=new HashMap<String,Object>();
+		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+	    Date date = new Date();
+	  //  System.out.println(dateFormat.format(date));
+		///model.addAttribute("currentdate", dateFormat.format(date));
+	    map.put("currentdate", dateFormat.format(date));
+		return map;
+	}
+}
