@@ -137,7 +137,7 @@
                                                     </div>
 
                                                 <!-- CR6 Section -->
-                                                <%-- <h6 style="cursor:pointer; margin:0; padding:10px 15px; font-weight:bold; color:#2c3e50;" class="toggleSection">CR6</h6>
+                                                 <h6 style="cursor:pointer; margin:0; padding:10px 15px; font-weight:bold; color:#2c3e50;" class="toggleSection">CR6</h6>
                                                 <div id="cr6Section" class="toggleContent" style="display:none; padding:5px 15px 5px 35px; background-color:#f1f5f9;">
                                                     <!-- GRADE Section -->
                                                     <h6 style="cursor:pointer; margin-bottom:5px; margin-left:15px; font-weight:bold;" class="toggleSubmodule">
@@ -271,7 +271,7 @@
                                                             <a href='<spring:url value="/manintenancelog/page"/>'>- Daily Shift Logs Data Entry</a>
                                                         </h6>
                                                     </div>
-                                                </div> --%>
+                                                </div> 
 
                                                 <!-- CR5 Section -->
                                                 <h6 style="cursor:pointer; margin:0; padding:10px 15px; font-weight:bold; color:#2c3e50;" class="toggleSection">PM5 PRODUCTION</h6>
