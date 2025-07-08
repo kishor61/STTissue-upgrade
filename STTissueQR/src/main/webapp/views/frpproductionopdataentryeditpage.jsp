@@ -266,7 +266,7 @@ padding: 5px 17px;
 <input type="submit" class="button" value="Save">
 
 </form>
-<!-- <td><a href='/BTSQR/frpproductionopdataentry/new'><button class="button">Go Back</button></a></td> -->
+<!-- <td><a href='/STTissueQR/frpproductionopdataentry/new'><button class="button">Go Back</button></a></td> -->
 </center>
 
 <br>

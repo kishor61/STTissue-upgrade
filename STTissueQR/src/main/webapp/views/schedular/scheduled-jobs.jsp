@@ -197,7 +197,7 @@
 
     function confirmDelete(jobId) {
         if (confirm("Are you sure you want to delete this job?")) {
-      const url = "/BTSQR/JobMonitoring/deleteJob?id="+jobId;
+      const url = "/STTissueQR/JobMonitoring/deleteJob?id="+jobId;
         window.location.href = url;
     }
     }

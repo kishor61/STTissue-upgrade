@@ -140,9 +140,9 @@ public class IncidentalMailer {
 						System.out.println();
 						
 						if(ipAddr.getHostAddress().equalsIgnoreCase("172.16.5.54")){
-							builder.append("<a href='192.168.80.5:8089/BTSQR/incidentaluser/view/data/downloadfile/"+id+"' target='_blank'>Download Attachment</a>");
+							builder.append("<a href='192.168.80.5:8089/STTissueQR/incidentaluser/view/data/downloadfile/"+id+"' target='_blank'>Download Attachment</a>");
 						}else{
-							builder.append("<a href='192.168.80.5:8080/BTSQR/incidentaluser/view/data/downloadfile/"+id+"' target='_blank'>Download Attachment</a>");
+							builder.append("<a href='192.168.80.5:8080/STTissueQR/incidentaluser/view/data/downloadfile/"+id+"' target='_blank'>Download Attachment</a>");
 						}
 						builder.append("</td>"
 						+ "</tr>"

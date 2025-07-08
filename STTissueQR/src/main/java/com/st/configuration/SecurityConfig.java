@@ -41,7 +41,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/BTSQR", "/", "/login", "/plugins/**", "/dist/**", "/views/**").permitAll()
+				.requestMatchers("/STTissueQR", "/", "/login", "/plugins/**", "/dist/**", "/views/**").permitAll()
 				.requestMatchers("/home").hasAnyRole("ADMIN", "OPERATOR", "OPERATOR2", "OPERATOR3", "OPERATOR4", "OPERATOR5", "OPERATOR6", "TT")
 				.requestMatchers("/report/**").hasAnyRole("ADMIN", "OPERATOR", "OPERATOR2", "OPERATOR3", "OPERATOR4", "OPERATOR6")
 				.requestMatchers("/grade/**", "/pm5grade/**").hasAnyRole("ADMIN", "OPERATOR", "OPERATOR6")

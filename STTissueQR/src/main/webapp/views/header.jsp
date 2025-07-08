@@ -5,19 +5,19 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="/BTSQR/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="/BTSQR/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="/STTissueQR/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/STTissueQR/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
-    <link rel="stylesheet" href="/BTSQR/plugins/icheck/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="/STTissueQR/plugins/icheck/icheck-bootstrap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="/BTSQR/dist/css/layout.css">
-    <link href="/BTSQR/dist/css/stylesheet.css" rel="stylesheet">
+    <link rel="stylesheet" href="/STTissueQR/dist/css/layout.css">
+    <link href="/STTissueQR/dist/css/stylesheet.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/2.10.1/styles/overlayscrollbars.min.css">
-    <link rel="stylesheet" href="/BTSQR/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/STTissueQR/plugins/daterangepicker/daterangepicker.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- New Header and sidebar css file path-->
-    <link href="/BTSQR/dist/css/HeaderNew.css" rel="stylesheet">
+    <link href="/STTissueQR/dist/css/HeaderNew.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href='<spring:url value="dist/img/favicon.ico"/>' />
     <style>
         .main-header {
@@ -201,14 +201,14 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-light-primary elevation-4">
         <a href="index3.html" class="brand-link">
-            <img src="/BTSQR/dist/images/STlogo.png" alt="ST Logo" class="brand-image img-circle elevation-3">
+            <img src="/STTissueQR/dist/images/STlogo.png" alt="ST Logo" class="brand-image img-circle elevation-3">
         </a>
 
         <security:authorize access="isAuthenticated()">
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-1 mb-2 d-flex align-items-center">
                     <div class="image">
-                        <img src="/BTSQR/dist/img/avtar.svg" class="img-circle elevation-2" alt="User Image">
+                        <img src="/STTissueQR/dist/img/avtar.svg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">
@@ -221,7 +221,7 @@
                 <nav class="mt-0">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="/BTSQR/home" class="nav-link active">
+                            <a href="/STTissueQR/home" class="nav-link active">
                                 <p>Home</p>
                             </a>
                         </li> 

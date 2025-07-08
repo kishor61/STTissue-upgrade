@@ -11,15 +11,15 @@
 <jsp:include page="../common.jsp"></jsp:include>
 
 <!-- Required CSS files -->
-<link rel="stylesheet" href="/BTSQR/plugins/fontawesome-free/css/all.min.css">
-<link rel="stylesheet" href="/BTSQR/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-<link rel="stylesheet" href="/BTSQR/plugins/icheck/icheck-bootstrap.min.css">
-<link rel="stylesheet" href="/BTSQR/dist/css/layout.css">
-<link href="/BTSQR/dist/css/stylesheet.css" rel="stylesheet">
+<link rel="stylesheet" href="/STTissueQR/plugins/fontawesome-free/css/all.min.css">
+<link rel="stylesheet" href="/STTissueQR/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<link rel="stylesheet" href="/STTissueQR/plugins/icheck/icheck-bootstrap.min.css">
+<link rel="stylesheet" href="/STTissueQR/dist/css/layout.css">
+<link href="/STTissueQR/dist/css/stylesheet.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/2.10.1/styles/overlayscrollbars.min.css">
-<link rel="stylesheet" href="/BTSQR/plugins/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="/STTissueQR/plugins/daterangepicker/daterangepicker.css">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-<link href="/BTSQR/dist/css/HeaderNew.css" rel="stylesheet">
+<link href="/STTissueQR/dist/css/HeaderNew.css" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href='<spring:url value="dist/img/favicon.ico"/>' />
 
 <spring:url value="/operatorCareCheckListPM5/checkObcc" var="checkURL" />
