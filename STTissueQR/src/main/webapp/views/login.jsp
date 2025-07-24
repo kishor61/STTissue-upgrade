@@ -24,7 +24,7 @@
     <div class="login-container">
         <div class="login-box">
             <h1 style="font-family: 'Futura', 'Avenir', 'Century Gothic', sans-serif; margin-top: -20px; text-align: center;">
-                <img src="<c:url value='/dist/images/STTissue.png' />" alt="Barnwell Tissue Solutions" style="max-width: 400px; display: inline-block;">
+                <img src="<c:url value='/dist/images/STTissue.JPG' />" alt=" STTissue Solutions" style="max-width: 400px; display: inline-block;">
             </h1>
             
             <c:if test="${param.error != null}">

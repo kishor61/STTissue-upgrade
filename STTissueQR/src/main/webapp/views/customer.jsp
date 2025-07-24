@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><spring:message code="app.name" /></title>
+
 <jsp:include page="common.jsp"></jsp:include>
 <script type="text/javascript">
 	$(function(){
@@ -35,7 +35,7 @@
 		            text-align: center;
 		            width: 100%;
 		          "
-		><h5 style="text-align:center; font-weight:bold;color:#343e70;">Add Customer</h5></div>
+		>
 
 	<div class="container" style="display: flex; justify-content: center; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px;">
 

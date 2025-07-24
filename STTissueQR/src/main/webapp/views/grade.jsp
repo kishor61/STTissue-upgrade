@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><spring:message code="app.name" /> - Grade Specification</title>
+<title>  Grade Specification</title>
 <meta charset="utf-8" />
 
 <jsp:include page="common.jsp"></jsp:include>

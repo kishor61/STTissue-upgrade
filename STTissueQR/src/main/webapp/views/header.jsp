@@ -201,7 +201,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-light-primary elevation-4">
         <a href="index3.html" class="brand-link">
-            <img src="/STTissueQR/dist/images/STlogo.png" alt="ST Logo" class="brand-image img-circle elevation-3">
+            <img src="/STTissueQR/dist/images/STTissue.JPG" alt="ST Logo" class="brand-image img-circle elevation-3">
         </a>
 
         <security:authorize access="isAuthenticated()">
