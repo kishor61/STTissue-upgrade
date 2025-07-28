@@ -860,7 +860,7 @@ var currentValue;
 							 &nbsp; <button onclick="location.href='<spring:url value="/reel/add/back"/>'">Backdated Entry</button>
 							</security:authorize>
 							
-							 &nbsp;&nbsp;
+							<!-- &nbsp;&nbsp;
 							<div style="display: inline-block;">
 								<div style="display: inline;" id="frpBrightDiv"><b>FRP Bright. </b><a href="javascript:void(0)" style="font-weight: bold;"><span id="frpBrightnessAvg"></span></a></div>
 								<div id="blistData" style="display: none;">
@@ -876,7 +876,7 @@ var currentValue;
 								<span>RED/T: <span id="wrapRedTon">0</span></span>
 								&nbsp;|&nbsp;
 								<span>REJ/T: <span id="wrapRejTon">0</span></span>
-							</div>
+							</div>-->
 							</c:if>
 							 </td>
 							 <td style=" text-align: right;width: 200px;">
