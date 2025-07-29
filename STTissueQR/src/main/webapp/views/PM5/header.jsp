@@ -63,7 +63,7 @@
 <spring:url value="/" var="singInURL"/>
 <spring:url value="/reel/add" var="defaultReelURL"/>
 <spring:url value="/rewind/add" var="defaultRewindURL"/>
-
+<!--
 <script type="text/javascript">
 	$(function(){
 		timeoutCheck();
@@ -143,7 +143,7 @@
 		
 	}
 </script>
- 
+ -->
 </security:authorize>
 
 

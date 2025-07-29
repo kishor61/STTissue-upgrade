@@ -82,7 +82,7 @@
         }
     </style>
 </head>
-
+<!--
 <script type="text/javascript">
 	$(function(){
 		timeoutCheck();
@@ -161,7 +161,7 @@
 		
 	}
 </script>
- 
+ -->
 <body>
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
